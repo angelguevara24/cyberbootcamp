@@ -1,0 +1,434 @@
+1 Call to Worship 
+
+Neighbors, please join me in reading this second issue of the International Journal of Proof of 
+Concept or Get the F*@! Out, a friendly little collection of articles for ladies and gentlemen 
+of distinguished ability and taste in the field of software exploitation and the worship of weird 
+machines. If you are missing Issue 0x00, we politely suggest pirating it from the usual locations, 
+or on paper from a neighbor who picked up a copy in Vegas. 
+
+In Section 2, Dan Kaminsky presents of all strange things a defensive PoC! His four lines 
+of Javascript seem to produce random bytes, but that can't possibly be right. If you disagree 
+with him, POC || STFU. 
+
+This issue's devotional is in Section 3, where Travis Goodspeed shares a thought experiment 
+in which Ada Lovelace and Serena Butler fight on opposite sides of the Second War on General 
+Purpose Computing using Don Lancaster's TV Typewriter as ammunition. 
+
+In the grand tradition of backfiring parse tree differentials, Ange Albertini shares in Section 4 
+a nifty trick for creating a PE file that is interpreted differently by Windows XP, 7, and 8. 
+Perhaps you'll use this as an anti-reversing trick, or perhaps you'll finally learn why TinyPE 
+doesn't work after XP. Either way, neighborliness abounds. 
+
+In Section 5, Julia Wolf demonstrates on four napkins how to make a PDF that is also a 
+ZIP. Perhaps, dear reader, if you are reading this from a PDF you might find a file or two to 
+be attached? 
+
+In Section 6, Josh Thomas will teach you a how to permanently brick an Android phone by 
+screwing around with its voltage regulators in quick kernel patch. We the editors remind readers to send only 
+quality, technical correspondence to Josh; any rubbish that merely advocates your chosen brand of cellphone 
+should be sent to jobs@paper.li. 
+
+Today's sermon, to be found in Section 7, concerns the divinity of programming languages, from PHP to 
+BASIC. Following along with a little scripture and a lot of liquor, we'll see that every language has a little 
+something special to make it worth learning and teaching. Except Java. 
+
+Finally, in Section 8, we pass the collection plate and beg that you contribute some PoC of your own. 
+Articles should be short and sweet, written such that a reader will be inspired to build something clever. 
+
+This issue is dedicated to the continuing ministry of Mitch Altman, a Johnny Appleseed of soldering 
+literacy who has taught countless adults and countless children in countless cities to build their own elec- 
+tronics. 
+2 Four Lines of Javascript that Can't Possibly Work 
+So why do they? 
+
+by Dan Kaminsky 
+
+// These functions form an ENG. 
+
+function millisQ {return Date.nowQ;} 
+
+function flip_coin() {n = 0; then = millis () + 1 ; while ( millis ()<=then) {n=!n;} return n;} 
+function get _ fair _ bit ( ) {while(l) {a=f lip _ coin () ; i f ( a!= flip _ coin () ) {return ( a) ;}} } 
+function get _random_byte ( ) { n = 0; bits=8; while(bits ){n<<=l; n| = get_fair_bit () ; } return n;} 
+
+// Use it like this . 
+
+report _ console = function () {while(l) { console . log ( get_random_byte ());} } 
+report_console (); 
+
+2.1 Introduction 
+
+When Apple's iPhone 5S was announced, a litany of criticism against its fingerprint reader was unleashed. 
+Clearly, it would be vulnerable to decade old gelatin cloning attacks. Or clearly, it would utilize subdermal 
+analysis or electrical measurement or liveness checking and not be vulnerable at all. Both fates were possible. 
+It took Nick DePetrillo and Rob Graham to say, "PoC || GTFO." 
+
+What Starbug eventually demonstrated was that the old attacks do indeed still work. It didn't have to 
+be that way, but at the heart of science is experimentation and testing. The very definition of unscientific 
+work is not merely that it will not be subjected to test but that by design it cannot. 
+
+Of course, I am not submitting an article about the iPhone 5S. I'm here to write about a challenge that's 
+been quietly going on for the last two years, one that remains unbroken. 
+
+Can we use the clock differentials, baked into pretty much every piece of computing equipment, as a 
+source for a True Random Number Generator? We should find out. 
+
+2.2 Context 
+
+"The generation of random numbers is too important to be left to chance," as 
+Robert R. Coveyou from Oak Ridge liked to say. Computers, at least as people 
+like to mentally model them, are deterministic devices. The same input will 
+always lead to the same output. 
+
+Electrically, this is unnecessary. It takes a lot of work to make an integrated 
+circuit completely reliable. Semiconductors are more than happy to behave 
+unpredictably. Semiconductor manufacturers, by contrast, have behaved very 
+predictably, refusing to implement what would admittedly be a rather difficult 
+part to test. 
+
+Only recently have we gotten an instruction out of Intel to retrieve random 
+numbers, RDRAND. I can't comment as to the validity of the function except 
+to say that any audit process that refuses its auditors physical access to the 
+part in question and disables all possible debugging or post-verification after 
+release is not a process that inspires confidence. 
+
+But do we need the instruction? The core assumption is that in lieu of 
+RDRAND the computer is deterministic, that the same input will lead to the 
+same output. Seems reasonable, until you ask: 
+
+If all I do is turn a computer on, will it take the same number of nanoseconds 
+to reach the boot screen? 
+
+If you think the answer is yes, PoC || GTFO. 
+
+
+
+CLOCALPEEP? 
+
+
+
+Another name for 
+the CCB-II, which is: 
+
+• a clock 
+
+hour, minute, second 
+
+• a calendar 
+
+day, day of week, 
+month, year 
+
+• an audio alarm 
+
+
+
+Alio 
+
+
+
+e board for your 
+
+
+
+
+TRS-80 Model II 
+
+It includes a pacemaker battery which will 
+give over 8 years of continuous timekeeping. 
+
+From the folks who brought you the best 
+CP/M® for the Model II. 
+
+S175 plus shipping 
+Prepaid, COD, MasterchargeorVisaorders 
+accepted. California residents add 6% 
+sales tax. 
+
+
+
+TrouT 
+
+
+
+PICKLES & TROUT 
+
+P.O. BOX 1 206, GOLETA. CA 93 1 1 6, (805) 967-9563 
+
+
+
+2 
+
+
+
+If you think the answer is no, that there will be some amount of nanosecond drift, then where does this 
+drift come from? The answer is that the biggest lie about your computer is that it's just one computer. CPU 
+cores talk to memory busses talk to expansion busses talk to storage and networking and the interrupt of the 
+month club. There are generally some number of clocks, they have different speeds and different tolerances, 
+and you do not get them synchronized for free. (System-on-Chip devices are a glaring exception, but it's 
+still rather common for them to be speaking to peripherals.) 
+
+Merely turning the machine on does not synchronize everything, so there is drift. Where there is drift, 
+there is entropy. Where there is entropy, there is security. 
+
+2.3 This is Actually a Problem 
+
+To stop a brute force attack against your random number generator, you need a few bits. At least 80, ideally 
+128. Not 128 million. 128. Ever. For the life of that particular device. (Not model! The attacker can just go 
+out and buy one of those devices, and find those 128 bits.) Now you may say, "We need more than 128 bits 
+for production." And that's fine. For that, we have what are known as Cryptographically Secure Pseudo 
+Random Number Generators (CSPRNG's). Seed 128 bits in, get an infinite keystream out. As long as the 
+same seed is never repeated, all is well. 
+
+Cryptographers love arguing about good CSPRNGs, but the reality is that it's not that hard to construct 
+one. Run a good cipher or hash function (not RC4) in pretty much any sort of loop and the best attack 
+reduces to breaking that cipher or hash function. (If you disagree, PoC || GTFO.) That's not to say there 
+aren't "nice to have" properties that an ideal CSPRNG can acquire, but empirically two things have actually 
+happened in the real world some of us are trying to defend. 
+
+First, most PRNG's aren't cryptographically secure. Most random 
+numbers are not securely generated. They could be. CSPRNGs can cer- 
+tainly be fast enough. If we really wanted, they could be simple enough 
+too. To be fair, the advice of "Just use /dev/urandom." is what most 
+languages should follow. But there's a second issue, and it's severe. 
+
+The second issue, the hard part, is not expanding 128 bits to an infinite 
+stream. The hard part is actually getting those 128 bits! So called "True 
+Random Number Generation" is actually the thing we are bad at, in the 
+real world. The CSPRNG of the gods falls to a broken TRNG. What 
+is a kernel supposed to do when /dev/urandom wants data and there is 
+no seed? The whole idea behind /dev/urandom is that it will provide 
+answers immediately. And so, in general, it does. 
+
+And then Nadia Heninger scans the Internet, and finds that 1/200 
+RSA keys are badly formed. That's a floor, by the way. Keys that are 
+similar but not quite identical are not counted in that 1/200. But of 
+course, buying a handful of devices gives you the similarity map. 
+
+However bad clock differentials might be, they would not have created 
+this apocalyptic failure rate. 
+
+2.4 This Didn't Have to Happen 
+
+In 1999, Daniel J. Bernstein pointed out that the 16 bit transaction ID in DNS was insufficient and that the 
+UDP source port could be overloaded to provide almost 32 bits of entropy per DNS request. His advice was 
+not accepted. 
+
+In 1996, Matt Blaze created Truerand, a scheme that pitted the CPU against signal handlers. His 
+approach actually has a long and storied history, back to the VMS days, but it was never accepted either. 
+
+In 2011, I released Dakarand. Dakarand is a collection of approaches for pitting various clocks inside 
+against a computer against each other. Many random number generation schemes come down to measuring 
+something that varies by millisecond with something that varies by nanosecond. (Your CPU, running in a 
+
+
+
+SciTronics introduces . . . 
+
+REAL TIME CLOCKS 
+
+with full Clock/Calendar Functions 
+
+The Worry-free Clocks for People 
+Who Don't Have Time to Worry!! 
+
+What makes them worry-free? 
+
+• Crystal controlled for high 
+(.002%) accuracy 
+
+• Lithium battery backup for contin- 
+uous clock operation (6000 hrs!H) 
+
+• Complete software in BASIC- 
+including programs to Set and 
+Read clock 
+
+• Clock generates interrupts 
+
+
+
+
+Applications: 
+
+• Logging Computer on time 
+
+• Timing of events 
+
+• Use it with the SciTronics Remote 
+Controller for Real Time control 
+of A.C. operated lights and ap- 
+pliances 
+
+
+
+Versions available for: 
+
+• S-100 bus computers RTC-100 S 
+
+• Apple II computer RTC-A $129 
+
+• SciTronics RC-80 RC-80CK $ 
+
+send SciTronics Inc. 
+
+Chock or 523 s aewell St-j p o Box . 
+o,d°rio- Bethlehem, PA 18015 
+
+(215) 868-7220 
+Please list system with which you plan to 
+controller • Master Charge and Visa accepted. 
+COD's accepted. PA residence add sales to. 
+
+
+
+3 
+
+
+
+tight loop, is a fast clock operating in the gigahertz. Your RTC — Real Time Clock — is much slower and is 
+not reporting milliseconds accurate to the nanosecond. In confusion, profit.) 
+
+Dakarand may in fact fail, somehow, somewhere, in some mode. But thus far, it seems to work pretty 
+much everywhere, even virtual machines. (As a TRNG, each read event can generate new seed material 
+without depending on data that might have been inherited before VM cloning.) 
+
+In 2013, in honor of Barnaby Jack, I tossed together the code at the top of this article. It's the weakest 
+possible formulation of this concept, written in JavaScript and hardened only with the barest level of Von 
+Neumann. It is called oi.js, and you should break it. 
+
+After all, it's just JavaScript. It can't be secure. 
+
+The idea is, in fact, to find the weakest formulation of this concept that still works. PoC || GTFO shows 
+us where known security stops and safety margin begins. 
+
+2.5 On Measuring the Strength of Cryptosystems 
+
+Sometimes people forget that we regularly build remarkably safe code out of seemingly trivial to break 
+components. Hash functions are generally composed of simple operations that, with only a few rounds of 
+those functions, start becoming seriously tricky to reverse. RSA, through this lens, is just multiply as an 
+encryption function, albeit with a mind bending number of rounds. 
+
+Humans do not require complex radioactivity measurements or dwellings on the nature of the universe to 
+get a random bit. They can merely flip a coin, a system that is well described as the Newtonian interaction 
+between a slow clock (coin goes up, coin goes down) and a fast clock (coin spins round and round.) Pretending 
+that there is nothing with the properties of a simple coin anywhere in the mess that is a device that can at 
+least run Linux is enabling vulnerability. 
+
+PoC's in defense are rare — now let's see what you've got ;) 3 Weird Machines from Serena Butler's TV Typewriter 
+
+by Travis Goodspeed 
+
+In the good old days, one could make the argument-however fraudulent !-t hat 
+memory corruption exploits were only used by the bad guys, to gain remote code 
+execution against the poor good guys. The clever folks who wrote such exploits were 
+looked upon as if they were kicking puppies, and though we all knew there was a 
+good use for that technology, we had little more than RMS's paranoid ramblings 
+about fascism to present as a legitimate use-case. Those innocent days in which 
+exploit authors were derided as misfits and sinners are beginning to end, as children 
+must now use kernel exploits to program their own damned cell phones. If we as 
+authors of weird machines are to prepare for the future, it might be a good idea to 
+work out a plan of last resort. What could be build if computers themselves were 
+outlawed? 
+
+I'm writing to share with you the concept of a Butlerian Typewriter, loosely 
+inspired by Cory Doctorow's 28C3 lecture and strongly inspired by many good nights 
+of fine scotch with Sergey Bratus, Meredith Patterson, Len Sassaman, Bx Shapiro, 
+and Julian Bangert. It's a little thought experiment about what weird machines 
+could be constructed in a world that has outlawed Turing-completeness. 
+
+In the universe of Frank Herbert's Dune, the war on general-purpose computing is over, and the computers 
+lost — but not before they struck first, enslaved humanity, and would have eliminated it if it were not for one 
+Serena Butler. St. Serena showed the way by defenestrating a robotic jailer, leading the rest of humanity in 
+the Butlerian Jihad against computers and thinking machines. Having learned the hard way that building 
+huge centralized systems to run their lives was not a bright idea, humans banned anything that could grow 
+into one. 
+
+So general-purpose computers still exist on the black market, and you can buy one if you have the 
+right connections and freedom from prosecution, but they are strictly and religiously illegal to possess or 
+manufacture. The Orange Catholic Bible commands, "Thou shalt not make a machine in the likeness of a 
+man's mind." 
+
+Instead of general purpose computers, Herbert's society has application-specific machines for various 
+tasks. Few would argue that a typewriter or a cat picture are dangerous, but your iPhone is a heresy. Siri 
+would be mistaken for the Devil himself. 
+
+Let's simplify this rule to Turing-completeness. Let's imagine that it is 
+illegal to possess or to manufacture a Universal Turing Machine. This means 
+no ELF or DWARF interpreters, no HTML5 browsers. No present-day CPU 
+instruction set is legal either; not ARM, not MIPS, not PowerPC, not X86, 
+and not AMD64. Not even a PDP11 or MSP430. Pong would be legal, but 
+Ms. Pac-Man would not. In terms of Charles Babbage's work, the Difference 
+Engine would be fine but the Analytical Engine would be forbidden. 
+
+Now comes the fun part. Let's have a competition between Ada Lovelace 
+and Serena Butler. Serena's goal is to produce what we will call a Bulterian 
+Typewriter, an application-specific word processor of sorts. She can use any 
+modern technology in designing the typewriter, as such things are available 
+to her from the black market. She even has access modern manufacturing 
+technology, so producing microchips is allowed if they are not Turing-complete. 
+She may not, however, produce anything contrary to the O.C.B.'s prohibition 
+against thinking machines. Nothing Turing-complete is legal, and even her 
+social standing isn't sufficient to get away with mass production of computers. 
+
+So Serena designs a Butlerian Typewriter using black market tools like 
+Verilog or VHDL, then mass produces it for release on the white market as a consumer appliance with no 
+Turing machine included. One might imagine that she would begin with a text buffer, wiring its output to 
+6 Burning a Phone 
+
+
+
+by Josh u @mOnk" Thomas 
+
+Earlier this year, I spent a couple months exploring exactly how power routing and battery charging work 
+in Android phones for the DARPA Cyber Fast Track program. I wanted to see if I could physically break 
+phones beyond repair using nothing more than simple software tricks and I also wanted to share the path to 
+my outcomes with the community. I'm sure I will talk at some point about the entire project and its specific 
+targets, but tonight I want to simply walk through breaking a phone, see what it learns us and maybe spur 
+some interesting follow on work in the process. 
+
+Because it's my personal happy place, our excursion into kinetic breakage will be contained to the pseudo 
+Linux kernel that runs in all Android devices. More importantly, we will focus the arch/arm/mach-msm 
+subsystem and direct our curiosity towards breaking the commonplace NAND Flash and SD Card hardware 
+components. A neighbor specifically directed me not to include background information in this write-up, 
+but we have to start somewhere prior to frying and disabling hardware internals and in my mind the logical 
+starting point is the common power regulation framework. 
+
+The Linux power regulation framework is surprisingly well documented, so I will simply point a curious 
+reader to the kernel's documentation at Document at ion /power /regulator /overview, txt. For the purpose of 
+breaking devices, all we really need to understand at the onset are these three things. 
+
+• The framework defines voltage parameters for specific hardware connected to the PCB. 
+
+• The framework regulates PMIC and other control devices to ensure specific hardware is given the 
+correct voltages. 
+
+• The framework directly interacts with both the kernel and the physical PCB, as one would expect from 
+a (meta) driver 
+
+It's also worth noting that the PCB has some (albeit surprisingly limited) hardwired protections against 
+voltage manipulations. Further, the kernel has a fairly robust framework to detect thermal issues and controls 
+to shut down the system when temperature thresholds are exceeded. 
+
+So, in essence, we have a system with a collection of logical rules that keep the device safe. This makes 
+sense. 
+
+Glancing back at our target for attack, we should quickly consider end result potentials. Do we want to 
+simply over volt the NAND chip to the point of frying all the data or do we want something a little more 
+subtle? To me, subtle is sexy. . . , so let's walk though simply trying to ensure that any NAND writes or 
+reads corrupt any data in transit or storage. 
+
+On the Sony Xperia Z platform, all NAND Flash and all SD-Card interactions are actually controlled 
+by the Qualcomm MSM 7X00A SDCC hardware. Given we RTFM'd the docs above, we simply need to 
+implement a slight patch to the kernel: 
+
+project kernel /sony /apq8064/ 
+
+diff — git a/arch/arm/mach— msm/board— sony_yuga— regulator . c 
+b/arch/ arm/mach— msm/board— sony_yuga— regulator . c 
+
+— RPM_LDO(L5, 0, 1, 0, 2950000, 2950000, NULL, 0, 0), 
+^RPM_LDO(L5, 0, 1, 0, 5900000, 5900000, NULL, 0,0), 
+
+— RPM_LDO(L6, 0, 1, 0, 2950000, 2950000, NULL, 0, 0), 
+^RPM_LDO(L6, 0, 1, 0, 5900000, 5900000, NULL, 0, 0), 

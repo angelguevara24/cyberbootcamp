@@ -1,0 +1,59 @@
+3 Weird Machines from Serena Butler's TV Typewriter 
+
+by Travis Goodspeed 
+
+In the good old days, one could make the argument-however fraudulent !-t hat 
+memory corruption exploits were only used by the bad guys, to gain remote code 
+execution against the poor good guys. The clever folks who wrote such exploits were 
+looked upon as if they were kicking puppies, and though we all knew there was a 
+good use for that technology, we had little more than RMS's paranoid ramblings 
+about fascism to present as a legitimate use-case. Those innocent days in which 
+exploit authors were derided as misfits and sinners are beginning to end, as children 
+must now use kernel exploits to program their own damned cell phones. If we as 
+authors of weird machines are to prepare for the future, it might be a good idea to 
+work out a plan of last resort. What could be build if computers themselves were 
+outlawed? 
+
+I'm writing to share with you the concept of a Butlerian Typewriter, loosely 
+inspired by Cory Doctorow's 28C3 lecture and strongly inspired by many good nights 
+of fine scotch with Sergey Bratus, Meredith Patterson, Len Sassaman, Bx Shapiro, 
+and Julian Bangert. It's a little thought experiment about what weird machines 
+could be constructed in a world that has outlawed Turing-completeness. 
+
+In the universe of Frank Herbert's Dune, the war on general-purpose computing is over, and the computers 
+lost — but not before they struck first, enslaved humanity, and would have eliminated it if it were not for one 
+Serena Butler. St. Serena showed the way by defenestrating a robotic jailer, leading the rest of humanity in 
+the Butlerian Jihad against computers and thinking machines. Having learned the hard way that building 
+huge centralized systems to run their lives was not a bright idea, humans banned anything that could grow 
+into one. 
+
+So general-purpose computers still exist on the black market, and you can buy one if you have the 
+right connections and freedom from prosecution, but they are strictly and religiously illegal to possess or 
+manufacture. The Orange Catholic Bible commands, "Thou shalt not make a machine in the likeness of a 
+man's mind." 
+
+Instead of general purpose computers, Herbert's society has application-specific machines for various 
+tasks. Few would argue that a typewriter or a cat picture are dangerous, but your iPhone is a heresy. Siri 
+would be mistaken for the Devil himself. 
+
+Let's simplify this rule to Turing-completeness. Let's imagine that it is 
+illegal to possess or to manufacture a Universal Turing Machine. This means 
+no ELF or DWARF interpreters, no HTML5 browsers. No present-day CPU 
+instruction set is legal either; not ARM, not MIPS, not PowerPC, not X86, 
+and not AMD64. Not even a PDP11 or MSP430. Pong would be legal, but 
+Ms. Pac-Man would not. In terms of Charles Babbage's work, the Difference 
+Engine would be fine but the Analytical Engine would be forbidden. 
+
+Now comes the fun part. Let's have a competition between Ada Lovelace 
+and Serena Butler. Serena's goal is to produce what we will call a Bulterian 
+Typewriter, an application-specific word processor of sorts. She can use any 
+modern technology in designing the typewriter, as such things are available 
+to her from the black market. She even has access modern manufacturing 
+technology, so producing microchips is allowed if they are not Turing-complete. 
+She may not, however, produce anything contrary to the O.C.B.'s prohibition 
+against thinking machines. Nothing Turing-complete is legal, and even her 
+social standing isn't sufficient to get away with mass production of computers. 
+
+So Serena designs a Butlerian Typewriter using black market tools like 
+Verilog or VHDL, then mass produces it for release on the white market as a consumer appliance with no 
+Turing machine included. One might imagine that she would begin with a text buffer, wiring its output to 

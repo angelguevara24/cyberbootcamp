@@ -1,0 +1,55 @@
+Maze 1
+------------------------------
+Start.txt
+Bedroom
+  Closet
+  Dresser
+  Bonus.txt
+Bathroom
+  MedicineCabinet
+    Toothpaste
+    Brush
+  Shower
+    End
+    
+Maze 2
+------------------------------
+Start.txt
+Kitchen
+  Refrigerator
+    Bonus.txt
+  Oven
+LivingRoom
+  CoffeeTable
+    Remotes
+      End
+    Books
+  MediaCenter
+    MediaPlayer
+      DVD
+      VHS
+
+Maze 3 
+------------------------------
+Start.txt
+Left
+  Left
+    Left
+      Left
+      Right
+    Right
+      Bonus.txt
+  Right
+Right
+  Left
+    Left
+      Left
+        Left
+        Right
+          End
+      Right
+    Right
+  Right
+    Left
+    Right
+
