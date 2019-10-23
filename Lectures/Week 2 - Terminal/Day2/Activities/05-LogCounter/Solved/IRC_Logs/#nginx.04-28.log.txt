@@ -1,0 +1,1506 @@
+2014-04-28T00:00:15  *** trae32566 has joined #nginx
+2014-04-28T00:01:13  *** trae32566 has joined #nginx
+2014-04-28T00:01:44  *** trae32566 has joined #nginx
+2014-04-28T00:02:19  *** trae32566 has joined #nginx
+2014-04-28T00:02:47  *** trae32566 has joined #nginx
+2014-04-28T00:03:13  *** trae32566 has joined #nginx
+2014-04-28T00:03:43  *** trae32566 has joined #nginx
+2014-04-28T00:04:13  *** trae32566 has joined #nginx
+2014-04-28T00:04:44  *** trae32566 has joined #nginx
+2014-04-28T00:04:56  *** shingshang has joined #nginx
+2014-04-28T00:05:03  *** tokik has joined #nginx
+2014-04-28T00:05:13  *** trae32566 has joined #nginx
+2014-04-28T00:05:47  *** trae32566 has joined #nginx
+2014-04-28T00:05:59  *** cheesecakes_ has quit IRC
+2014-04-28T00:05:59  *** cheesecakes_ has joined #nginx
+2014-04-28T00:06:02  *** cheesecakes_ is now known as cheesecakes
+2014-04-28T00:06:20  *** trae32566 has joined #nginx
+2014-04-28T00:06:34  *** tigerz has quit IRC
+2014-04-28T00:07:13  *** trae32566 has joined #nginx
+2014-04-28T00:07:16  *** Nirgali42 has quit IRC
+2014-04-28T00:07:29  *** Milly_Bays has quit IRC
+2014-04-28T00:08:13  *** trae32566 has joined #nginx
+2014-04-28T00:08:46  *** trae32566 has joined #nginx
+2014-04-28T00:08:58  *** crystal77 has quit IRC
+2014-04-28T00:09:43  *** trae32566 has joined #nginx
+2014-04-28T00:10:14  *** trae32566 has joined #nginx
+2014-04-28T00:10:18  *** akolesen has quit IRC
+2014-04-28T00:10:43  *** trae32566 has joined #nginx
+2014-04-28T00:11:54  *** trae32566 has quit IRC
+2014-04-28T00:12:32  *** kawa2014 has joined #nginx
+2014-04-28T00:12:54  *** Sgeo has quit IRC
+2014-04-28T00:13:49  *** subraminion has quit IRC
+2014-04-28T00:19:17  *** subraminion has joined #nginx
+2014-04-28T00:19:56  *** subraminion has joined #nginx
+2014-04-28T00:20:22  *** wa5ted has quit IRC
+2014-04-28T00:26:32  *** hafeez3000 has quit IRC
+2014-04-28T00:26:44  *** tigerz has joined #nginx
+2014-04-28T00:27:36  *** hafeez3000 has joined #nginx
+2014-04-28T00:29:05  *** Sgeo has joined #nginx
+2014-04-28T00:37:19  *** `VL has quit IRC
+2014-04-28T00:37:38  *** hidgw has quit IRC
+2014-04-28T00:41:54  *** ogny has joined #nginx
+2014-04-28T00:44:01  *** Nikolas has joined #nginx
+2014-04-28T00:44:27  *** Jon30 has quit IRC
+2014-04-28T00:44:32  <chipotle> hi, i'm trying to install varnish with no success. when i try to restart nginx it says that something is already listening on port 80. the thing is, i only have one vhost file and it's listening on 8080
+2014-04-28T00:44:35  <chipotle> what else can i check for?
+2014-04-28T00:44:41  <chipotle> i just get a wsod when i go to my webpage
+2014-04-28T00:44:48  *** manuel_____ has joined #nginx
+2014-04-28T00:47:18  *** hidgw has joined #nginx
+2014-04-28T00:48:06  <chipotle> nothing is showing up in my logs
+2014-04-28T00:51:13  *** acu has joined #nginx
+2014-04-28T00:51:43  <combusean> chipotle, sudo netstat -a and confirm that
+2014-04-28T00:52:00  <combusean> it's not running or nothing's running.
+2014-04-28T00:52:13  <combusean> netstat -a |grep tcp might be more useful
+2014-04-28T00:52:38  *** arietis has quit IRC
+2014-04-28T00:52:39  <orlock> netstate -t
+2014-04-28T00:52:39  <orlock> :
+2014-04-28T00:52:41  <orlock> :)
+2014-04-28T00:53:38  <combusean> that works too
+2014-04-28T00:53:41  <combusean> :S
+2014-04-28T00:53:41  *** Novitsh_ has joined #nginx
+2014-04-28T00:54:29  <combusean> I did lsof |grep -i tcp for the longest time :P
+2014-04-28T00:54:56  <chipotle> here's netstat -a https://gist.github.com/cmejo/11362730
+2014-04-28T00:56:18  *** arietis has joined #nginx
+2014-04-28T00:56:55  <chipotle> i removed varnish and the list got smaller
+2014-04-28T00:56:59  <chipotle> and i'm able to start nginx
+2014-04-28T00:57:04  <chipotle> but my site still shows the wsod
+2014-04-28T00:57:30  <combusean> uhh
+2014-04-28T00:58:04  *** michaelneale_ has joined #nginx
+2014-04-28T00:58:14  <combusean> actually do that sudo lsof -i |grep tcp cause that will tell you the process name that's listening
+2014-04-28T00:58:21  <combusean> you def have something going on :80 but I can't tell what it is
+2014-04-28T00:58:26  <chipotle> changed my listen dir back to 80 in the vhost config
+2014-04-28T00:58:56  <chipotle> nothing shows up with that command
+2014-04-28T00:59:14  <combusean> grep -i tcp, sorry
+2014-04-28T00:59:59  <combusean> sudo lsof |grep -i tcp
+2014-04-28T01:00:57  <chipotle> here it is now: http://pastie.org/9118781
+2014-04-28T01:01:02  *** michaelneale has quit IRC
+2014-04-28T01:01:08  <chipotle> i purged varnish, changed my vhost back to 80 from 8080
+2014-04-28T01:01:11  <chipotle> still getting wsod
+2014-04-28T01:01:12  *** liwen has quit IRC
+2014-04-28T01:02:39  *** Chepra has quit IRC
+2014-04-28T01:04:30  *** Chepra has joined #nginx
+2014-04-28T01:05:21  <chipotle> combusean: any ideas? :/
+2014-04-28T01:05:34  <combusean> chipotle, not sure what wsod is?
+2014-04-28T01:05:43  <chipotle> white screen of death
+2014-04-28T01:05:53  <chipotle> nothing shows up in my web browser
+2014-04-28T01:06:13  <chipotle> when i tyoe in the url
+2014-04-28T01:06:16  *** lovecraftian has joined #nginx
+2014-04-28T01:06:17  *** lovecraftian has quit IRC
+2014-04-28T01:06:17  *** lovecraftian has joined #nginx
+2014-04-28T01:06:28  <combusean> oh
+2014-04-28T01:06:37  <combusean> what env are you running in?
+2014-04-28T01:07:42  <chipotle> ubuntu 12.0.4 on aws
+2014-04-28T01:08:59  <combusean> ok, on your recent pastie, you have nginx workers going on :80, is that what you want?
+2014-04-28T01:09:39  <chipotle> no i want it on 8080 ad varnish on 80
+2014-04-28T01:09:57  <chipotle> so should i try to configure varnish again, then run lsof | grep -i tcp ?
+2014-04-28T01:10:15  <combusean> lsof |grep -i tcp just tells you what services are running and listening to what ports
+2014-04-28T01:10:22  <combusean> you definitely still have nginx going on :80
+2014-04-28T01:11:37  <combusean> did you service restart nginx before you changed the config files?
+2014-04-28T01:11:44  <combusean> erm, after?
+2014-04-28T01:12:09  <chipotle> yes
+2014-04-28T01:12:18  * combusean stalked you btw.
+2014-04-28T01:12:22  <combusean> howdy neighbor ;)
+2014-04-28T01:12:44  <combusean> i haven't worked with varnish
+2014-04-28T01:12:57  <combusean> i know that if you stop nginx in redhat, the workers sometimes take forever to clean up
+2014-04-28T01:13:04  <combusean> or generally
+2014-04-28T01:13:10  <chipotle> stalked me?
+2014-04-28T01:13:23  *** Spami has joined #nginx
+2014-04-28T01:13:30  <combusean> you left your hostname in the github, was curious what it was
+2014-04-28T01:13:34  <combusean> i live in SF too :)
+2014-04-28T01:13:43  <combusean> erm, in the paste
+2014-04-28T01:13:46  <chipotle> i'm in boston
+2014-04-28T01:13:49  <combusean> ahh
+2014-04-28T01:13:55  <combusean> anyways
+2014-04-28T01:14:18  <combusean> this isn't production is it?
+2014-04-28T01:14:38  <chipotle> no
+2014-04-28T01:14:41  <chipotle> staging
+2014-04-28T01:14:41  <combusean> good
+2014-04-28T01:14:48  <combusean> just checking
+2014-04-28T01:15:58  <combusean> have you tried killall -9 nginx just out of curiousity?  i've actually been working for 3 days in fixing nginx's deficincies in their init scripts because workers lie around
+2014-04-28T01:16:54  <combusean> lemme see your nginx.conf
+2014-04-28T01:18:30  <chipotle> nginx.conf: http://pastie.org/9118810
+2014-04-28T01:20:10  *** XATRIX has joined #nginx
+2014-04-28T01:21:26  <combusean> chipotle, you don't have a listen 8080; in your nginx.conf file
+2014-04-28T01:21:36  <chipotle> combusean: i do that in the vhost config
+2014-04-28T01:23:08  <combusean> can i see that one too?
+2014-04-28T01:23:27  <chipotle> seems like varnishd is running on both 80 and 8080
+2014-04-28T01:23:32  <chipotle> according to netstat -anp --tcp --udp | grep LISTEN
+2014-04-28T01:24:04  <chipotle> see? http://pastie.org/9118821
+2014-04-28T01:24:35  *** tobi__ has joined #nginx
+2014-04-28T01:24:56  <combusean> aha
+2014-04-28T01:25:10  <combusean> nginx is on tcp 80 and varnish is on tcp6 80
+2014-04-28T01:25:22  <combusean> that's kinda fucked up
+2014-04-28T01:25:47  <chipotle> orlock: https://gist.github.com/cmejo/11363150
+2014-04-28T01:26:33  <chipotle> line 9 should say 8080
+2014-04-28T01:26:36  <chipotle> not 80
+2014-04-28T01:26:39  <jaybe> chipotle, the unspoken default for nginx is to listen on 80.
+2014-04-28T01:26:59  <jaybe> meaning... if you do not explicitly state otherwise, `listen 80` is presumed.
+2014-04-28T01:27:16  <chipotle> jaybe: well, in my vhost config, i say 8080
+2014-04-28T01:27:17  <jaybe> lines 3-6 fall into that category
+2014-04-28T01:27:22  <chipotle> so varnish listens on 80...
+2014-04-28T01:27:43  *** pilgo has joined #nginx
+2014-04-28T01:27:44  <chipotle> oh, so put another listen 8080 after line 5?
+2014-04-28T01:27:46  <pilgo> Hi all.
+2014-04-28T01:27:52  <combusean> hi pilgo
+2014-04-28T01:28:05  <pilgo> I’m trying to redirect all users from https to http
+2014-04-28T01:28:10  <jaybe> if you do not specify a listen:PORT, the presumed default is and always will be listen:80
+2014-04-28T01:28:11  <pilgo> (no longer need https)
+2014-04-28T01:28:26  <pilgo> most google stuff talks about how to do the opposite
+2014-04-28T01:28:42  <jaybe> pilgo, example:  server { listen 443; ...; return 301 http://example.com$request_uri; }
+2014-04-28T01:28:49  <chipotle> jaybe: okay
+2014-04-28T01:28:58  <chipotle> i did that, here's my netstat output:
+2014-04-28T01:29:15  <chipotle> https://gist.github.com/cmejo/11363211
+2014-04-28T01:29:43  <jaybe> what about it
+2014-04-28T01:29:50  <combusean> chipotle, you don't have varnish configured to listen off of normal tcp
+2014-04-28T01:29:55  <combusean> just IPV6
+2014-04-28T01:30:04  <chipotle> combusean: how do i change that?
+2014-04-28T01:30:12  <combusean> i don't know, i haven't used varnish
+2014-04-28T01:30:16  <combusean> but that's your problem
+2014-04-28T01:30:57  <combusean> varnishd is listening off :6082
+2014-04-28T01:31:05  <combusean> that you can access from localhost
+2014-04-28T01:31:41  <chipotle> how do i access from localhost?
+2014-04-28T01:31:44  <chipotle> it's on an ec2
+2014-04-28T01:31:56  <pilgo> jaybe: Doesn’t seem to do it. http://dpaste.com/1801160/
+2014-04-28T01:31:59  <combusean> X forwarding
+2014-04-28T01:32:12  <pilgo> FF says Error code: ssl_error_rx_record_too_long
+2014-04-28T01:32:20  <combusean> remote-host# apt-get install xauth
+2014-04-28T01:32:33  <combusean> your-computer# ssh -CX remote-host
+2014-04-28T01:32:46  <jaybe> pilgo, you must configure certificates for ssl regardless of context
+2014-04-28T01:32:59  <jaybe> pilgo, it's how ssl works; handshake/ssl first.
+2014-04-28T01:33:00  <pilgo> jaybe: oh dang
+2014-04-28T01:33:21  <combusean> chipotle, :6082 is varnishd's management interface
+2014-04-28T01:33:51  <combusean> it's really beyond this channel how varnish works
+2014-04-28T01:33:51  *** tobi__ has quit IRC
+2014-04-28T01:34:17  <combusean> #varnish may help you
+2014-04-28T01:35:04  <chipotle> ok
+2014-04-28T01:35:09  <combusean> you've successfully moved nginx to :8080
+2014-04-28T01:35:34  <chipotle> yah
+2014-04-28T01:38:06  <chipotle> guess i'll go to bed and look at this with fresh eyes tomorrow
+2014-04-28T01:38:07  <chipotle> thanks :)
+2014-04-28T01:38:54  *** s3ri0us|away has quit IRC
+2014-04-28T01:39:29  <MrGeneral> Folks: http://whplace.com/index.html https://whplace.com/index.html why is the header different? o.O
+2014-04-28T01:40:55  *** Spami has quit IRC
+2014-04-28T01:43:10  *** quattro_ has joined #nginx
+2014-04-28T01:43:15  *** nicekiwi has joined #nginx
+2014-04-28T01:44:38  *** micko__ has joined #nginx
+2014-04-28T01:45:22  *** Nikolas has quit IRC
+2014-04-28T01:46:28  *** Nikolas has joined #nginx
+2014-04-28T01:47:07  *** micko has quit IRC
+2014-04-28T01:47:22  <combusean> chipotle, no problem =)
+2014-04-28T01:48:58  *** micko has joined #nginx
+2014-04-28T01:52:32  *** ollivera has joined #nginx
+2014-04-28T01:56:42  *** tigerz1 has joined #nginx
+2014-04-28T01:58:15  *** closures999 has joined #nginx
+2014-04-28T01:59:18  *** tigerz has quit IRC
+2014-04-28T01:59:23  *** sshilovsky has joined #nginx
+2014-04-28T02:01:27  *** mire_ has joined #nginx
+2014-04-28T02:02:25  *** nicekiwi has quit IRC
+2014-04-28T02:05:57  *** tank100 has quit IRC
+2014-04-28T02:06:13  *** tank100 has joined #nginx
+2014-04-28T02:08:01  *** zeljko__ has quit IRC
+2014-04-28T02:09:15  *** subraminion_ has joined #nginx
+2014-04-28T02:10:01  *** subraminion has quit IRC
+2014-04-28T02:16:24  *** nhayashi has quit IRC
+2014-04-28T02:18:18  *** quattro_ has quit IRC
+2014-04-28T02:21:23  *** voidfire has joined #nginx
+2014-04-28T02:21:34  *** nhayashi has joined #nginx
+2014-04-28T02:24:25  *** chipotle has quit IRC
+2014-04-28T02:26:26  *** `VL has joined #nginx
+2014-04-28T02:29:03  *** edulix has quit IRC
+2014-04-28T02:30:14  *** jillesme has joined #nginx
+2014-04-28T02:30:38  *** kPb_in has joined #nginx
+2014-04-28T02:31:17  *** Rubynaut has joined #nginx
+2014-04-28T02:32:40  *** pavol has joined #nginx
+2014-04-28T02:32:48  *** shoma has joined #nginx
+2014-04-28T02:33:24  *** CoreISP has quit IRC
+2014-04-28T02:35:06  *** le_tropico has quit IRC
+2014-04-28T02:35:37  *** rocahenry has joined #nginx
+2014-04-28T02:36:43  *** edulix has joined #nginx
+2014-04-28T02:37:48  *** subraminion_ has quit IRC
+2014-04-28T02:38:45  *** le_tropico has joined #nginx
+2014-04-28T02:40:48  *** john2x has joined #nginx
+2014-04-28T02:45:24  *** quattro_ has joined #nginx
+2014-04-28T02:47:35  *** quattro_ has quit IRC
+2014-04-28T02:49:26  *** subraminion_ has joined #nginx
+2014-04-28T02:50:14  *** subraminion_ has joined #nginx
+2014-04-28T02:51:09  *** Otacon22 has quit IRC
+2014-04-28T02:55:47  *** quattr8 has joined #nginx
+2014-04-28T02:55:56  *** rocahenry has quit IRC
+2014-04-28T02:57:30  *** montross has joined #nginx
+2014-04-28T02:59:49  *** dreamcat4 has quit IRC
+2014-04-28T03:00:51  *** liwen has joined #nginx
+2014-04-28T03:02:56  *** mperillo has joined #nginx
+2014-04-28T03:04:33  *** pavol has quit IRC
+2014-04-28T03:04:40  *** ninja_p has joined #nginx
+2014-04-28T03:04:55  *** Dogs has joined #nginx
+2014-04-28T03:05:00  *** skcin7 has quit IRC
+2014-04-28T03:05:09  *** pavol has joined #nginx
+2014-04-28T03:05:36  *** skcin7 has joined #nginx
+2014-04-28T03:05:50  *** grzany has joined #nginx
+2014-04-28T03:06:21  *** sheki has joined #nginx
+2014-04-28T03:06:41  *** mdw has joined #nginx
+2014-04-28T03:09:11  *** subraminion_ has quit IRC
+2014-04-28T03:09:11  *** subraminion_ has joined #nginx
+2014-04-28T03:10:19  *** subraminion has joined #nginx
+2014-04-28T03:12:32  *** skcin7 has quit IRC
+2014-04-28T03:12:35  *** rikai has quit IRC
+2014-04-28T03:14:04  *** mikecmpbll has joined #nginx
+2014-04-28T03:16:00  *** mire_ has quit IRC
+2014-04-28T03:19:29  *** atannus has quit IRC
+2014-04-28T03:20:22  *** atannus has joined #nginx
+2014-04-28T03:21:12  *** combusean has quit IRC
+2014-04-28T03:21:15  *** fury has quit IRC
+2014-04-28T03:21:27  *** yaj has joined #nginx
+2014-04-28T03:21:47  *** fury has joined #nginx
+2014-04-28T03:21:55  *** dominikto has quit IRC
+2014-04-28T03:25:20  *** manuel_____ has quit IRC
+2014-04-28T03:27:51  *** rhoml has joined #nginx
+2014-04-28T03:29:19  *** manuel_____ has joined #nginx
+2014-04-28T03:29:46  *** rikai has joined #nginx
+2014-04-28T03:29:47  *** rikai has quit IRC
+2014-04-28T03:29:47  *** rikai has joined #nginx
+2014-04-28T03:35:38  *** ajprog_laptop has quit IRC
+2014-04-28T03:35:42  *** meson10 has joined #nginx
+2014-04-28T03:41:26  *** sheki has quit IRC
+2014-04-28T03:42:39  *** rikai has quit IRC
+2014-04-28T03:48:25  *** gk has quit IRC
+2014-04-28T03:50:40  *** dreamcat4 has joined #nginx
+2014-04-28T03:54:30  *** gk has joined #nginx
+2014-04-28T03:59:50  *** hakunin has quit IRC
+2014-04-28T04:00:12  *** hakunin has joined #nginx
+2014-04-28T04:01:14  *** rikai has joined #nginx
+2014-04-28T04:01:15  *** rikai has quit IRC
+2014-04-28T04:01:15  *** rikai has joined #nginx
+2014-04-28T04:05:48  *** niq has joined #nginx
+2014-04-28T04:13:28  *** Otacon22 has joined #nginx
+2014-04-28T04:13:48  *** liwen has quit IRC
+2014-04-28T04:13:56  *** wa5ted has joined #nginx
+2014-04-28T04:14:14  *** Linux_Asylum has joined #nginx
+2014-04-28T04:15:14  *** grzany has quit IRC
+2014-04-28T04:15:41  *** johnkevinmbasco has joined #nginx
+2014-04-28T04:17:14  *** combusean has joined #nginx
+2014-04-28T04:18:19  *** JoshGlzBrk has quit IRC
+2014-04-28T04:18:34  *** arietis has quit IRC
+2014-04-28T04:20:39  *** MultiColourPixel has joined #nginx
+2014-04-28T04:21:37  *** combusean has quit IRC
+2014-04-28T04:24:12  *** fury has quit IRC
+2014-04-28T04:24:50  *** fury has joined #nginx
+2014-04-28T04:25:16  *** yaj has quit IRC
+2014-04-28T04:26:43  *** yaj has joined #nginx
+2014-04-28T04:27:54  *** Hounddog has joined #nginx
+2014-04-28T04:31:21  *** grzany has joined #nginx
+2014-04-28T04:33:01  *** mikef2 has joined #nginx
+2014-04-28T04:33:13  *** danielcosta has joined #nginx
+2014-04-28T04:33:16  *** subraminion has quit IRC
+2014-04-28T04:33:37  *** Power2All has joined #nginx
+2014-04-28T04:34:45  *** arietis has joined #nginx
+2014-04-28T04:35:30  *** Power2All has quit IRC
+2014-04-28T04:35:38  <ngxbot> Paste from mikef: [ http://p.ngx.cc/ffe2 ] - location matching
+2014-04-28T04:36:01  *** closures999 has quit IRC
+2014-04-28T04:36:34  *** closures999 has joined #nginx
+2014-04-28T04:36:37  <mikef2> in my config above im trying to match those locations but it does not work,  how do i correct that to work?
+2014-04-28T04:37:24  <mikef2> they currently give me 404's
+2014-04-28T04:38:45  *** Power2All has joined #nginx
+2014-04-28T04:39:57  *** johnkevinmbasco has quit IRC
+2014-04-28T04:44:47  *** frostschutz has joined #nginx
+2014-04-28T04:46:16  *** Otacon22 has quit IRC
+2014-04-28T04:49:06  *** subraminion has joined #nginx
+2014-04-28T04:49:38  *** subraminion has joined #nginx
+2014-04-28T05:00:11  *** AlexPortable has joined #nginx
+2014-04-28T05:00:18  *** Otacon22 has joined #nginx
+2014-04-28T05:02:24  *** mdw has quit IRC
+2014-04-28T05:04:21  *** jillesme has quit IRC
+2014-04-28T05:05:34  *** mdw has joined #nginx
+2014-04-28T05:14:05  *** wojtosz has joined #nginx
+2014-04-28T05:15:24  *** tokik has quit IRC
+2014-04-28T05:15:27  *** wojtosz has quit IRC
+2014-04-28T05:15:34  *** michaelneale_ has quit IRC
+2014-04-28T05:15:41  *** wojtosz has joined #nginx
+2014-04-28T05:25:11  *** mikeybisbo has quit IRC
+2014-04-28T05:26:05  *** jobarte has quit IRC
+2014-04-28T05:29:12  *** Otacon22 has quit IRC
+2014-04-28T05:30:43  *** fury has quit IRC
+2014-04-28T05:32:59  *** fury has joined #nginx
+2014-04-28T05:33:38  *** jeffasinger has quit IRC
+2014-04-28T05:34:18  *** jeffasinger has joined #nginx
+2014-04-28T05:35:05  *** themagician has joined #nginx
+2014-04-28T05:36:17  *** ninja_p_ has joined #nginx
+2014-04-28T05:36:27  *** mrvisser has joined #nginx
+2014-04-28T05:38:40  *** dobalina has joined #nginx
+2014-04-28T05:38:49  *** ninja_p has quit IRC
+2014-04-28T05:40:12  *** Linux_Asylum has quit IRC
+2014-04-28T05:42:48  *** ninja_p_ has quit IRC
+2014-04-28T05:43:51  *** Otacon22 has joined #nginx
+2014-04-28T05:48:14  *** closures999 has quit IRC
+2014-04-28T05:48:30  *** cigol has joined #nginx
+2014-04-28T05:49:37  *** yshh has quit IRC
+2014-04-28T05:49:46  <cigol> hi I have "try_files $uri $uri/ /index.html =404" and I want replacement with @. It will be "try_files $uri $uri/ @prerender". How @prerender function should looks like ?
+2014-04-28T05:50:32  *** shad0VV has quit IRC
+2014-04-28T05:51:07  *** ninja_p_ has joined #nginx
+2014-04-28T05:52:00  *** Power2All has quit IRC
+2014-04-28T05:52:16  *** Power2All has joined #nginx
+2014-04-28T05:57:24  *** shad0VV has joined #nginx
+2014-04-28T06:02:06  *** fury has quit IRC
+2014-04-28T06:03:19  *** smorin has joined #nginx
+2014-04-28T06:04:29  *** shad0VV has quit IRC
+2014-04-28T06:04:47  *** MannerMan has joined #nginx
+2014-04-28T06:05:22  *** fury has joined #nginx
+2014-04-28T06:06:52  *** jobarte has joined #nginx
+2014-04-28T06:09:25  *** shad0VV has joined #nginx
+2014-04-28T06:11:53  *** kkdue has joined #nginx
+2014-04-28T06:12:00  *** maxorator has quit IRC
+2014-04-28T06:12:02  <kkdue> hi
+2014-04-28T06:12:19  <kkdue> someone uses the rtmp module?
+2014-04-28T06:12:29  *** smorin has quit IRC
+2014-04-28T06:12:46  <kkdue> I'm trying to set up the stats for rtmp
+2014-04-28T06:12:59  <kkdue> however, I can't make it show the list of connected clients
+2014-04-28T06:13:27  *** mdw_ has joined #nginx
+2014-04-28T06:13:33  *** maxorator has joined #nginx
+2014-04-28T06:14:33  *** mdw has quit IRC
+2014-04-28T06:15:47  *** grzany has quit IRC
+2014-04-28T06:16:43  *** loudest has quit IRC
+2014-04-28T06:17:30  <mungustas> hey cigol location @error {
+2014-04-28T06:17:41  *** fury has quit IRC
+2014-04-28T06:17:44  <mungustas> so you can replace error with prerender
+2014-04-28T06:25:22  *** mdw_ has quit IRC
+2014-04-28T06:27:09  *** fury has joined #nginx
+2014-04-28T06:27:10  *** mdw has joined #nginx
+2014-04-28T06:28:42  *** mdw_ has joined #nginx
+2014-04-28T06:30:07  *** SonikBoom has joined #nginx
+2014-04-28T06:32:05  *** mdw has quit IRC
+2014-04-28T06:33:42  *** smorin has joined #nginx
+2014-04-28T06:34:33  *** montross has quit IRC
+2014-04-28T06:35:41  *** smorin has quit IRC
+2014-04-28T06:38:01  *** shad0VV has quit IRC
+2014-04-28T06:38:35  *** smorin has joined #nginx
+2014-04-28T06:39:52  *** subraminion has quit IRC
+2014-04-28T06:42:45  *** fury has quit IRC
+2014-04-28T06:43:06  *** NeO__o has joined #nginx
+2014-04-28T06:43:33  *** glambert has quit IRC
+2014-04-28T06:43:58  *** shad0VV has joined #nginx
+2014-04-28T06:45:22  *** fury has joined #nginx
+2014-04-28T06:46:49  *** subraminion has joined #nginx
+2014-04-28T06:46:55  *** smorin has quit IRC
+2014-04-28T06:46:58  *** danecando has joined #nginx
+2014-04-28T06:47:05  *** cigol has quit IRC
+2014-04-28T06:51:27  *** shad0VV has quit IRC
+2014-04-28T06:52:25  *** parduse has quit IRC
+2014-04-28T06:56:00  *** shad0VV has joined #nginx
+2014-04-28T06:56:33  *** showaz has quit IRC
+2014-04-28T07:00:59  *** klein has joined #nginx
+2014-04-28T07:01:00  *** klein has quit IRC
+2014-04-28T07:01:00  *** klein has joined #nginx
+2014-04-28T07:03:18  *** sinni800 has joined #nginx
+2014-04-28T07:03:33  *** smorin has joined #nginx
+2014-04-28T07:05:42  *** glambert has joined #nginx
+2014-04-28T07:09:07  *** JackDandy has quit IRC
+2014-04-28T07:09:16  *** JackDand- has joined #nginx
+2014-04-28T07:10:01  *** glambert has quit IRC
+2014-04-28T07:11:16  *** smorin has quit IRC
+2014-04-28T07:11:41  *** fury has quit IRC
+2014-04-28T07:12:05  *** mdw_ has quit IRC
+2014-04-28T07:12:22  *** mdw has joined #nginx
+2014-04-28T07:12:56  *** `VL` has joined #nginx
+2014-04-28T07:13:01  *** Sound has joined #nginx
+2014-04-28T07:13:03  *** mrvisser has quit IRC
+2014-04-28T07:13:38  *** mdw has quit IRC
+2014-04-28T07:14:04  *** mdw has joined #nginx
+2014-04-28T07:15:49  *** smorin has joined #nginx
+2014-04-28T07:15:52  *** mdw_ has joined #nginx
+2014-04-28T07:16:29  *** rhoml is now known as rhoml`
+2014-04-28T07:16:42  *** `VL has quit IRC
+2014-04-28T07:17:18  *** druid_ has joined #nginx
+2014-04-28T07:18:27  *** fury has joined #nginx
+2014-04-28T07:18:38  *** mdw has quit IRC
+2014-04-28T07:18:52  *** p2a has joined #nginx
+2014-04-28T07:19:29  *** Power2All has quit IRC
+2014-04-28T07:19:35  *** rhoml` is now known as rhoml
+2014-04-28T07:19:48  *** Power2All has joined #nginx
+2014-04-28T07:21:00  *** p2a has quit IRC
+2014-04-28T07:21:37  *** glambert has joined #nginx
+2014-04-28T07:22:24  *** p2a has joined #nginx
+2014-04-28T07:23:14  *** kakuno has joined #nginx
+2014-04-28T07:23:17  *** tigerz1 has quit IRC
+2014-04-28T07:23:31  *** ocherno has quit IRC
+2014-04-28T07:24:58  *** Power2All has quit IRC
+2014-04-28T07:27:44  *** p2a has quit IRC
+2014-04-28T07:29:06  *** grzany has joined #nginx
+2014-04-28T07:34:42  *** DaryL` has joined #nginx
+2014-04-28T07:35:13  *** matiskay has joined #nginx
+2014-04-28T07:35:37  *** showaz has joined #nginx
+2014-04-28T07:36:30  *** mrvisser has joined #nginx
+2014-04-28T07:39:12  *** toastedpenguin has joined #nginx
+2014-04-28T07:41:05  *** fury has quit IRC
+2014-04-28T07:45:02  *** fury has joined #nginx
+2014-04-28T07:49:28  *** dominikto has joined #nginx
+2014-04-28T07:49:49  *** knownasilya has joined #nginx
+2014-04-28T07:53:04  *** dominikto has quit IRC
+2014-04-28T07:53:27  *** kPb_in has quit IRC
+2014-04-28T07:56:27  *** smorin has quit IRC
+2014-04-28T07:58:25  *** dominikto has joined #nginx
+2014-04-28T08:02:12  *** mire_ has joined #nginx
+2014-04-28T08:02:20  *** qwebirc64746 has joined #nginx
+2014-04-28T08:03:33  *** qwebirc64746 is now known as chacal]
+2014-04-28T08:03:39  *** chacal] is now known as chacal
+2014-04-28T08:03:40  *** hellopat has joined #nginx
+2014-04-28T08:05:59  <chacal> Hi
+2014-04-28T08:06:03  *** mary_synthesizin has joined #nginx
+2014-04-28T08:06:25  <mdeboard> jo
+2014-04-28T08:06:39  <chacal> How to redirect www.domain.com/file1/file2/file3.html in www.domain.com/file3.html
+2014-04-28T08:06:55  *** mary_synthesizin has quit IRC
+2014-04-28T08:07:29  *** mary_synthesizin has joined #nginx
+2014-04-28T08:07:48  <chacal> help me in question
+2014-04-28T08:07:50  *** Ex-Opesa has joined #nginx
+2014-04-28T08:07:59  <chacal> How to redirect www.domain.com/file1/file2/file3.html in www.domain.com/file3.html
+2014-04-28T08:08:46  *** john2x_ has joined #nginx
+2014-04-28T08:09:58  <moju> wait more than a minute
+2014-04-28T08:10:01  <moju> if someone can help they well
+2014-04-28T08:10:23  <chacal> ok!
+2014-04-28T08:11:06  *** parduse has joined #nginx
+2014-04-28T08:11:59  *** john2x has quit IRC
+2014-04-28T08:12:53  *** smorin has joined #nginx
+2014-04-28T08:15:17  *** shad0VV has quit IRC
+2014-04-28T08:15:36  *** mdw_ has quit IRC
+2014-04-28T08:16:32  *** subraminion has quit IRC
+2014-04-28T08:17:23  *** smorin has quit IRC
+2014-04-28T08:18:43  *** mdw has joined #nginx
+2014-04-28T08:19:15  *** deavidsedice has joined #nginx
+2014-04-28T08:19:58  *** deavid has quit IRC
+2014-04-28T08:20:38  *** shad0VV has joined #nginx
+2014-04-28T08:22:37  *** JerryT has joined #nginx
+2014-04-28T08:23:22  *** Rubynaut has quit IRC
+2014-04-28T08:23:45  *** arietis has quit IRC
+2014-04-28T08:27:03  *** JerryT has quit IRC
+2014-04-28T08:28:12  *** penk has joined #nginx
+2014-04-28T08:28:56  *** jeffisabelle has joined #nginx
+2014-04-28T08:29:32  *** JerryT has joined #nginx
+2014-04-28T08:31:30  *** Berto has quit IRC
+2014-04-28T08:36:59  *** Sound has quit IRC
+2014-04-28T08:37:34  *** codabrink has joined #nginx
+2014-04-28T08:39:33  *** mire_ has quit IRC
+2014-04-28T08:40:51  *** mire_ has joined #nginx
+2014-04-28T08:44:24  *** crystal77 has joined #nginx
+2014-04-28T08:44:58  *** mire_ has quit IRC
+2014-04-28T08:45:26  *** MultiColourPixel has quit IRC
+2014-04-28T08:46:31  *** Sound has joined #nginx
+2014-04-28T08:49:25  *** zivester has joined #nginx
+2014-04-28T08:52:24  *** hafeez3000 has quit IRC
+2014-04-28T08:54:48  *** kkdue has quit IRC
+2014-04-28T08:55:31  *** ketas- has joined #nginx
+2014-04-28T08:56:37  *** ketas has quit IRC
+2014-04-28T08:56:42  *** niq has quit IRC
+2014-04-28T08:58:17  *** mary_synthesizin has quit IRC
+2014-04-28T08:59:25  *** smorin has joined #nginx
+2014-04-28T09:00:18  *** arietis has joined #nginx
+2014-04-28T09:00:41  <shoma> q
+2014-04-28T09:00:44  *** shoma has quit IRC
+2014-04-28T09:02:04  *** [1]Seph has joined #nginx
+2014-04-28T09:02:47  *** ketas- is now known as ketas
+2014-04-28T09:04:45  *** [2]Seph has joined #nginx
+2014-04-28T09:05:23  *** ndrei has joined #nginx
+2014-04-28T09:06:24  *** Nirgali42 has joined #nginx
+2014-04-28T09:06:42  *** [1]Seph has quit IRC
+2014-04-28T09:08:24  *** shubhang has joined #nginx
+2014-04-28T09:09:55  *** mary_synthesizin has joined #nginx
+2014-04-28T09:10:11  *** shubhang has quit IRC
+2014-04-28T09:10:46  *** smorin has quit IRC
+2014-04-28T09:10:54  *** ninja_p_ has quit IRC
+2014-04-28T09:11:24  *** Diemuzi has joined #nginx
+2014-04-28T09:12:53  *** ndrei has quit IRC
+2014-04-28T09:13:06  *** ajprog_laptop has joined #nginx
+2014-04-28T09:13:16  *** Forkk has quit IRC
+2014-04-28T09:13:22  *** mary_synthesizin has quit IRC
+2014-04-28T09:13:57  *** mary_synthesizin has joined #nginx
+2014-04-28T09:16:30  *** E1ven has quit IRC
+2014-04-28T09:17:13  *** E1ven has joined #nginx
+2014-04-28T09:19:05  *** AnimeCYC has joined #nginx
+2014-04-28T09:19:15  *** [2]Seph is now known as mfjordvald
+2014-04-28T09:19:16  *** ndrei has joined #nginx
+2014-04-28T09:20:00  *** shubhang has joined #nginx
+2014-04-28T09:20:40  *** shubhang has joined #nginx
+2014-04-28T09:23:01  *** [EddyF]_ has joined #nginx
+2014-04-28T09:24:10  *** [EddyF]_ is now known as [TheEddyFerreira
+2014-04-28T09:24:15  *** MiteshShah has joined #nginx
+2014-04-28T09:26:18  *** haraoka has joined #nginx
+2014-04-28T09:26:20  *** Sound has quit IRC
+2014-04-28T09:26:49  *** Sound has joined #nginx
+2014-04-28T09:27:38  *** MiteshShah has quit IRC
+2014-04-28T09:28:54  *** livingstn has joined #nginx
+2014-04-28T09:29:24  *** NeO__o has quit IRC
+2014-04-28T09:30:18  *** zivester has quit IRC
+2014-04-28T09:30:29  *** tobi__ has joined #nginx
+2014-04-28T09:35:29  *** Forkk has joined #nginx
+2014-04-28T09:38:07  *** frostschutz has quit IRC
+2014-04-28T09:45:04  *** arietis has quit IRC
+2014-04-28T09:45:37  *** dman777_alter has joined #nginx
+2014-04-28T09:45:55  <dman777_alter> hmm...on ubuntu I compiled nginx but I am missing the /var/lib/nginx/ contents
+2014-04-28T09:46:40  <jaybe> *cough* use a package
+2014-04-28T09:47:29  <dman777_alter> jaybe: long story...short version I can't
+2014-04-28T09:47:50  <thresh> what kind of contents
+2014-04-28T09:48:07  <jaybe> kitten.gif
+2014-04-28T09:48:11  <thresh> official packages dont ship anything in /var/lib/nginx
+2014-04-28T09:49:01  <dman777_alter> hm...I have --http-client-body-temp-path=/var/lib/nginx/body  in ./configure
+2014-04-28T09:49:37  <thresh> well, mkdir is your friend then
+2014-04-28T09:49:48  <thresh> and chown, probably
+2014-04-28T09:49:50  <jaybe>  /var/lib is generally used for sporadic, transient data
+2014-04-28T09:50:07  <jaybe> i.e. it's not likely pre-populated with anything
+2014-04-28T09:51:15  <ngxbot> Paste from jaybe: [ http://p.ngx.cc/ed ] - dman_777_alter - basic /var/lib
+2014-04-28T09:51:36  <dman777_alter> ya, but nginx complains nginx: [emerg] mkdir() "/var/lib/nginx/body" failed when I start
+2014-04-28T09:51:39  <dman777_alter> it
+2014-04-28T09:52:04  *** penk^ has joined #nginx
+2014-04-28T09:52:16  <jaybe> well, if you've configured your own nginx, and you've configured it to be in a position to use /var/lib/nginx/body caching, well, ... then its going to expect what you've promised it :)
+2014-04-28T09:53:02  <dman777_alter> jaybe: ya, I just assumed it would create the directory
+2014-04-28T09:53:13  <jaybe> it?
+2014-04-28T09:53:44  <jaybe> package management and initialization scripts of a package create variable directories, path, and files, ... and ensure proper permissions, etc.
+2014-04-28T09:54:07  <Oli> Is there a way for configtest (or other) to show what the configuration errors are? I'm just getting a simple [fail] at the moment.
+2014-04-28T09:54:14  *** davispuh has joined #nginx
+2014-04-28T09:54:17  <jaybe> Oli, `nginx -t`
+2014-04-28T09:54:17  *** shad0VV has quit IRC
+2014-04-28T09:54:23  <Oli> jaybe: ta
+2014-04-28T09:54:40  <jaybe> Oli, tail -f /var/log/nginx/*.log
+2014-04-28T09:55:13  <Oli> I (thankfully) haven't actually restarted it yet so there isn't a runtime log showing the problem yet :)
+2014-04-28T09:55:38  *** penk has quit IRC
+2014-04-28T09:56:31  <jaybe> get in the habit of tailing logs while configuring, starting, debugging, etc. helpful!
+2014-04-28T09:57:29  *** `VL` has quit IRC
+2014-04-28T10:00:24  *** shad0VV has joined #nginx
+2014-04-28T10:01:06  *** bakflash has joined #nginx
+2014-04-28T10:01:21  *** XATRIX has quit IRC
+2014-04-28T10:01:28  *** meson10 has quit IRC
+2014-04-28T10:02:03  *** meson10 has joined #nginx
+2014-04-28T10:02:06  *** john2x_ has quit IRC
+2014-04-28T10:02:23  *** ub1quit33 has joined #nginx
+2014-04-28T10:02:56  *** Gill has joined #nginx
+2014-04-28T10:08:05  *** fury has quit IRC
+2014-04-28T10:10:34  *** fury has joined #nginx
+2014-04-28T10:12:31  *** codecowboy has joined #nginx
+2014-04-28T10:19:12  *** ub1quit33 has quit IRC
+2014-04-28T10:21:24  *** also has joined #nginx
+2014-04-28T10:21:43  *** acu has quit IRC
+2014-04-28T10:22:48  *** acu has joined #nginx
+2014-04-28T10:25:50  *** ogny has quit IRC
+2014-04-28T10:26:23  *** subraminion has joined #nginx
+2014-04-28T10:30:07  *** Gill has quit IRC
+2014-04-28T10:31:14  *** Neozonz|Disc has joined #nginx
+2014-04-28T10:31:15  *** Neozonz|Disc has quit IRC
+2014-04-28T10:31:15  *** Neozonz|Disc has joined #nginx
+2014-04-28T10:32:29  *** gffa has joined #nginx
+2014-04-28T10:33:13  *** ethlor has joined #nginx
+2014-04-28T10:33:29  *** ethlor has quit IRC
+2014-04-28T10:38:23  *** fragamus has quit IRC
+2014-04-28T10:43:55  *** sdollins has quit IRC
+2014-04-28T10:44:10  *** wa5ted_ has joined #nginx
+2014-04-28T10:45:30  *** rgoodwin has quit IRC
+2014-04-28T10:45:47  *** kalz has quit IRC
+2014-04-28T10:45:50  *** bkuberek has joined #nginx
+2014-04-28T10:45:53  *** Neozonz|Disc has quit IRC
+2014-04-28T10:45:54  *** sadmac has quit IRC
+2014-04-28T10:46:41  *** SpNg has joined #nginx
+2014-04-28T10:47:05  *** wa5ted has quit IRC
+2014-04-28T10:47:14  *** wa5ted_ is now known as wa5ted
+2014-04-28T10:47:32  *** jens___ has joined #nginx
+2014-04-28T10:48:01  <jens___> Hi. Is there a way to see if nginx hits some limit or backlogs requests?
+2014-04-28T10:50:08  *** [diecast] has joined #nginx
+2014-04-28T10:50:15  *** sdollins has joined #nginx
+2014-04-28T10:50:39  *** sdollins is now known as Guest56058
+2014-04-28T10:51:13  *** brucelee has quit IRC
+2014-04-28T10:51:55  *** codecowboy has quit IRC
+2014-04-28T10:54:56  *** sheki has joined #nginx
+2014-04-28T10:55:10  *** ndrei has quit IRC
+2014-04-28T10:57:16  <[MT]> jens___: Things like that usually show up in the error log.
+2014-04-28T10:57:30  *** hagler has joined #nginx
+2014-04-28T10:57:46  *** guy has joined #nginx
+2014-04-28T10:57:49  *** carldanley has quit IRC
+2014-04-28T10:57:56  <guy> I ran into an odd
+2014-04-28T10:57:57  <guy> issue
+2014-04-28T10:58:25  <guy> Nginx started to cutting the output of the file when you change based on the new file size, but keeping the old file content.
+2014-04-28T10:58:56  <guy> e.g. if file was 'aaaaaaaaaa' and I changed the file to 'bbb', the response would be 'aaa'
+2014-04-28T10:59:29  <jaybe> no idea wtf you're talking about
+2014-04-28T10:59:41  *** sheki has quit IRC
+2014-04-28T10:59:54  <leev> guy: virtualbox with shared folders?
+2014-04-28T10:59:57  <guy> leev: yes
+2014-04-28T11:00:00  *** sadmac has joined #nginx
+2014-04-28T11:00:05  <guy> sounds like a bad start..
+2014-04-28T11:00:21  <leev> http { sendfile off; }
+2014-04-28T11:00:25  <jens___> [MT]: Nothing in the error log...
+2014-04-28T11:00:34  *** oh2lre has quit IRC
+2014-04-28T11:00:45  <guy> Thank you
+2014-04-28T11:00:46  <guy> that fixed it
+2014-04-28T11:00:49  <guy> but, what's the issue?
+2014-04-28T11:01:09  <guy> a link to an article about the issue would be enough
+2014-04-28T11:01:22  <guy> found it http://abitwiser.wordpress.com/2011/02/24/virtualbox-hates-sendfile/
+2014-04-28T11:01:27  <leev> http://www.reddit.com/r/linux/comments/12ssxq/i_ran_into_a_really_strange_issue_with_nginx_and/c6xvzv3
+2014-04-28T11:01:29  *** sheki has joined #nginx
+2014-04-28T11:02:24  <guy> Thank you. This freaked me out for a second. : )
+2014-04-28T11:02:40  <guy> The odd thing is that it was working for over 10 days without ever running into this issue.
+2014-04-28T11:02:58  <leev> np
+2014-04-28T11:03:07  *** skcin7 has joined #nginx
+2014-04-28T11:03:21  *** [diecast] has quit IRC
+2014-04-28T11:04:43  *** Asandari has quit IRC
+2014-04-28T11:05:13  *** edulix has quit IRC
+2014-04-28T11:05:18  *** carldanley has joined #nginx
+2014-04-28T11:05:48  *** sheki has quit IRC
+2014-04-28T11:07:09  *** Asandari has joined #nginx
+2014-04-28T11:07:27  *** sheki has joined #nginx
+2014-04-28T11:08:01  *** kalz has joined #nginx
+2014-04-28T11:08:32  *** edulix has joined #nginx
+2014-04-28T11:09:44  *** Dogs has quit IRC
+2014-04-28T11:10:30  *** ndrei has joined #nginx
+2014-04-28T11:11:56  *** sheki has quit IRC
+2014-04-28T11:11:58  *** JohnnyRun has quit IRC
+2014-04-28T11:13:39  *** edulix has quit IRC
+2014-04-28T11:13:40  *** sheki has joined #nginx
+2014-04-28T11:15:15  *** dtcrshr has joined #nginx
+2014-04-28T11:15:16  *** dtcrshr has quit IRC
+2014-04-28T11:15:16  *** dtcrshr has joined #nginx
+2014-04-28T11:18:16  *** sheki has quit IRC
+2014-04-28T11:18:37  *** mjsmith2 has joined #nginx
+2014-04-28T11:19:10  *** sheki has joined #nginx
+2014-04-28T11:19:20  *** akolesen has joined #nginx
+2014-04-28T11:21:19  *** arietis has joined #nginx
+2014-04-28T11:21:23  *** jaequery has joined #nginx
+2014-04-28T11:21:46  *** Diemuzi has quit IRC
+2014-04-28T11:21:57  *** jaequery has joined #nginx
+2014-04-28T11:21:58  *** edulix has joined #nginx
+2014-04-28T11:22:09  *** quattr8 has quit IRC
+2014-04-28T11:23:33  *** sheki has quit IRC
+2014-04-28T11:24:32  *** Annak has joined #nginx
+2014-04-28T11:24:38  *** DaryL` has quit IRC
+2014-04-28T11:25:10  *** Annak has quit IRC
+2014-04-28T11:25:13  *** DaryL` has joined #nginx
+2014-04-28T11:25:13  *** sheki has joined #nginx
+2014-04-28T11:26:15  *** edulix has quit IRC
+2014-04-28T11:26:50  *** [diecast] has joined #nginx
+2014-04-28T11:27:31  *** skcin7 has quit IRC
+2014-04-28T11:27:33  *** guy has quit IRC
+2014-04-28T11:28:00  *** edulix has joined #nginx
+2014-04-28T11:28:24  *** sheki has quit IRC
+2014-04-28T11:29:34  *** balboah has quit IRC
+2014-04-28T11:30:15  *** Diemuzi has joined #nginx
+2014-04-28T11:30:33  *** DaryL` has quit IRC
+2014-04-28T11:37:40  *** smorin has joined #nginx
+2014-04-28T11:37:50  *** sheki has joined #nginx
+2014-04-28T11:38:23  *** factoreal has joined #nginx
+2014-04-28T11:39:39  *** mikecmpbll has quit IRC
+2014-04-28T11:41:14  *** mdw has quit IRC
+2014-04-28T11:42:47  *** Berto has joined #nginx
+2014-04-28T11:43:50  *** meson10 has quit IRC
+2014-04-28T11:43:56  *** H4ndy has joined #nginx
+2014-04-28T11:44:32  *** coasterz has quit IRC
+2014-04-28T11:45:54  *** fragamus has joined #nginx
+2014-04-28T11:47:23  *** Berto has quit IRC
+2014-04-28T11:47:51  *** pavol has quit IRC
+2014-04-28T11:48:52  *** oojacoboo has joined #nginx
+2014-04-28T11:48:59  *** grzany has quit IRC
+2014-04-28T11:54:59  *** jcmb has joined #nginx
+2014-04-28T11:55:46  *** jcmb has left #nginx
+2014-04-28T11:56:03  *** MultiColourPixel has joined #nginx
+2014-04-28T11:57:42  *** skcin7 has joined #nginx
+2014-04-28T11:59:36  *** sheki has quit IRC
+2014-04-28T11:59:46  *** zerick has joined #nginx
+2014-04-28T12:02:01  *** H4ndy has quit IRC
+2014-04-28T12:02:10  *** sheki has joined #nginx
+2014-04-28T12:02:15  *** mikecmpbll has joined #nginx
+2014-04-28T12:02:25  *** H4ndy has joined #nginx
+2014-04-28T12:02:52  *** mrvisser has quit IRC
+2014-04-28T12:05:34  *** mikeybisbo has joined #nginx
+2014-04-28T12:07:15  *** [TheEddyFerreira has quit IRC
+2014-04-28T12:07:37  *** ogny has joined #nginx
+2014-04-28T12:08:26  *** andrew00david has joined #nginx
+2014-04-28T12:08:43  *** petris has quit IRC
+2014-04-28T12:09:22  *** petris has joined #nginx
+2014-04-28T12:09:31  *** mdhopkins has joined #nginx
+2014-04-28T12:10:20  *** Skrypter has joined #nginx
+2014-04-28T12:11:00  *** jareddlc has joined #nginx
+2014-04-28T12:11:26  *** crystal77 has quit IRC
+2014-04-28T12:13:35  *** davispuh has quit IRC
+2014-04-28T12:15:54  *** yshh has joined #nginx
+2014-04-28T12:16:24  *** chipotle has joined #nginx
+2014-04-28T12:16:27  *** Otacon22 has quit IRC
+2014-04-28T12:18:33  *** tystr_ has quit IRC
+2014-04-28T12:19:10  *** tystr has joined #nginx
+2014-04-28T12:19:36  *** H4ndy has quit IRC
+2014-04-28T12:19:54  *** fragamus has quit IRC
+2014-04-28T12:20:29  *** gusto has joined #nginx
+2014-04-28T12:21:02  *** enquora has joined #nginx
+2014-04-28T12:22:25  *** neonstalwart1 has joined #nginx
+2014-04-28T12:22:29  *** mfjordvald has quit IRC
+2014-04-28T12:23:12  *** mikef2 has quit IRC
+2014-04-28T12:24:57  <ngxbot> Paste from neonstalwart: [ http://p.ngx.cc/f1 ] - try_files
+2014-04-28T12:25:21  <neonstalwart1> hi, the proper syntax to do what i want is escaping me
+2014-04-28T12:26:03  *** smorin has quit IRC
+2014-04-28T12:26:10  <neonstalwart1> i want to do the common thing with try_files - e.g. try_files $uri $uri/index.html $uri.html =404;
+2014-04-28T12:26:11  <neonstalwart1> but on top of that i have a src and release dir where release should take priority if it exists
+2014-04-28T12:26:30  *** deevus has quit IRC
+2014-04-28T12:26:39  <[MT]> !conf | neonstalwart1
+2014-04-28T12:26:39  <ngxbot> 
+2014-04-28T12:26:43  <neonstalwart1> the paste has enough to do the src vs release but i want to also do / -> /index.html
+2014-04-28T12:26:46  <[MT]> oh... you did paste it
+2014-04-28T12:26:49  <neonstalwart1> yeah :)
+2014-04-28T12:27:28  <[MT]> location = / { return 301 /index.html; }
+2014-04-28T12:27:39  <[MT]> ngxbot: quit
+2014-04-28T12:27:39  <ngxbot> 
+2014-04-28T12:27:52  *** Novitsh_ has quit IRC
+2014-04-28T12:28:03  *** sheki has quit IRC
+2014-04-28T12:29:27  *** ngxbot has joined #nginx
+2014-04-28T12:29:38  *** [MT] sets mode: +b *!*@*tampfl.fios.verizon.net$##FIX_YOUR_CONNECTION
+2014-04-28T12:29:38  *** morgan.freenode.net sets mode: +b *!*@marcelo.feitoza.com.br$##FIX_YOUR_CONNECTION
+2014-04-28T12:29:38  *** morgan.freenode.net sets mode: +b *!*@*dllstx.fios.verizon.net$##FIX_YOUR_CONNECTION
+2014-04-28T12:29:38  *** morgan.freenode.net sets mode: +b *!*@unaffiliated/wouterds
+2014-04-28T12:29:39  *** morgan.freenode.net sets mode: +q *!*@unaffiliated/mrjones
+2014-04-28T12:29:39  *** morgan.freenode.net sets mode: +q *!*@www13355ui.sakura.ne.jp
+2014-04-28T12:29:48  *** shingshang has quit IRC
+2014-04-28T12:31:01  <[MT]> ngxbot: ping
+2014-04-28T12:31:01  <ngxbot> Ping yourself.
+2014-04-28T12:31:47  *** deevus has joined #nginx
+2014-04-28T12:32:18  <IAmTheClaw> lol
+2014-04-28T12:34:39  *** Es0teric has joined #nginx
+2014-04-28T12:34:39  <[MT]> ngxbot: ping
+2014-04-28T12:34:39  <[MT]> shit... that's horribly slow. :(
+2014-04-28T12:34:39  <[MT]> ngxbot: quit
+2014-04-28T12:34:39  <ngxbot> Ping yourself.
+2014-04-28T12:36:00  *** kawa2014 has quit IRC
+2014-04-28T12:36:31  *** ngxbot has joined #nginx
+2014-04-28T12:36:42  *** [MT] sets mode: +b *!*@*tampfl.fios.verizon.net$##FIX_YOUR_CONNECTION
+2014-04-28T12:36:42  *** morgan.freenode.net sets mode: +b *!*@marcelo.feitoza.com.br$##FIX_YOUR_CONNECTION
+2014-04-28T12:36:42  *** morgan.freenode.net sets mode: +b *!*@*dllstx.fios.verizon.net$##FIX_YOUR_CONNECTION
+2014-04-28T12:36:42  *** morgan.freenode.net sets mode: +b *!*@unaffiliated/wouterds
+2014-04-28T12:36:42  *** morgan.freenode.net sets mode: +q *!*@unaffiliated/mrjones
+2014-04-28T12:36:42  *** morgan.freenode.net sets mode: +q *!*@www13355ui.sakura.ne.jp
+2014-04-28T12:36:49  *** jovy88 has quit IRC
+2014-04-28T12:38:04  *** mire_ has joined #nginx
+2014-04-28T12:38:25  *** penk^ has quit IRC
+2014-04-28T12:38:47  *** chrisgeorge has joined #nginx
+2014-04-28T12:39:47  *** maximski has joined #nginx
+2014-04-28T12:40:08  *** maximski has quit IRC
+2014-04-28T12:40:21  *** sheki has joined #nginx
+2014-04-28T12:40:50  *** maximski has joined #nginx
+2014-04-28T12:43:07  *** penk has joined #nginx
+2014-04-28T12:45:36  *** yaj has quit IRC
+2014-04-28T12:48:22  *** chrisgeo has joined #nginx
+2014-04-28T12:48:47  *** chrisgeorge has quit IRC
+2014-04-28T12:50:49  *** chrisgeo has quit IRC
+2014-04-28T12:51:30  *** jovy88 has joined #nginx
+2014-04-28T12:51:36  *** chrisgeorge has joined #nginx
+2014-04-28T12:51:39  *** mrvisser has joined #nginx
+2014-04-28T12:51:59  *** quattro_ has joined #nginx
+2014-04-28T12:52:06  *** rhoml is now known as rhoml`
+2014-04-28T12:54:49  *** valgrind has joined #nginx
+2014-04-28T12:57:33  *** Sivik has joined #nginx
+2014-04-28T12:59:07  <Sivik> Is there a way to do a $domain = rewrite but ignore a specific folder, like domain.com/stream?
+2014-04-28T12:59:08  *** crystal77 has joined #nginx
+2014-04-28T12:59:51  *** label has joined #nginx
+2014-04-28T13:03:31  *** mustu has joined #nginx
+2014-04-28T13:03:38  *** mustu has quit IRC
+2014-04-28T13:03:38  *** mustu has joined #nginx
+2014-04-28T13:03:38  *** mustu has joined #nginx
+2014-04-28T13:03:49  <mustu> hi I need help in a little hack
+2014-04-28T13:04:32  <mustu> Can I redirect all users who type portal.mysite.com to portal.mysite.com?page=login
+2014-04-28T13:04:59  <mustu> i can't replace the index file with a redirector ..
+2014-04-28T13:05:53  *** grzany has joined #nginx
+2014-04-28T13:09:26  *** mire_ has quit IRC
+2014-04-28T13:10:27  *** Linux_Asylum has joined #nginx
+2014-04-28T13:10:44  *** yshh has quit IRC
+2014-04-28T13:10:48  *** chrisgeo has joined #nginx
+2014-04-28T13:12:16  *** hagler has quit IRC
+2014-04-28T13:12:35  *** ub1quit33 has joined #nginx
+2014-04-28T13:13:06  *** yshh has joined #nginx
+2014-04-28T13:13:56  *** RaiNerTsuFal has joined #nginx
+2014-04-28T13:14:05  *** chrisgeorge has quit IRC
+2014-04-28T13:15:35  *** moju has quit IRC
+2014-04-28T13:16:04  *** eduardo has joined #nginx
+2014-04-28T13:16:12  *** shubhang has quit IRC
+2014-04-28T13:16:23  *** grzany has quit IRC
+2014-04-28T13:16:28  *** eduardo is now known as Guest41356
+2014-04-28T13:16:52  *** shubhang has joined #nginx
+2014-04-28T13:16:53  *** dreamcat4 has quit IRC
+2014-04-28T13:18:06  *** [diecast] has quit IRC
+2014-04-28T13:20:12  *** Otacon22 has joined #nginx
+2014-04-28T13:20:48  *** [EddyF]_ has joined #nginx
+2014-04-28T13:21:25  *** moju has joined #nginx
+2014-04-28T13:21:39  *** tobi__ has quit IRC
+2014-04-28T13:21:58  *** toxboi has quit IRC
+2014-04-28T13:22:51  *** subraminion has quit IRC
+2014-04-28T13:24:42  *** arietis has quit IRC
+2014-04-28T13:25:22  *** jovy88 has quit IRC
+2014-04-28T13:25:47  *** metasansana has quit IRC
+2014-04-28T13:26:22  *** mikef2 has joined #nginx
+2014-04-28T13:26:51  *** jovy88 has joined #nginx
+2014-04-28T13:27:53  *** moju has quit IRC
+2014-04-28T13:32:29  *** moju has joined #nginx
+2014-04-28T13:33:10  *** NeO__o has joined #nginx
+2014-04-28T13:33:10  *** NeO__o has quit IRC
+2014-04-28T13:33:10  *** NeO__o has joined #nginx
+2014-04-28T13:34:29  *** shad0VV has quit IRC
+2014-04-28T13:40:13  *** shad0VV has joined #nginx
+2014-04-28T13:41:08  *** akolesen has quit IRC
+2014-04-28T13:41:43  *** jens___ has quit IRC
+2014-04-28T13:41:50  *** mikeybisbo has quit IRC
+2014-04-28T13:42:28  *** bkuberek_ has joined #nginx
+2014-04-28T13:43:02  *** mperillo has quit IRC
+2014-04-28T13:43:11  *** mdw has joined #nginx
+2014-04-28T13:44:10  *** tty00 has quit IRC
+2014-04-28T13:44:41  *** ub1quit33 has quit IRC
+2014-04-28T13:45:23  *** [EddyF]_ has quit IRC
+2014-04-28T13:45:54  *** bkuberek has quit IRC
+2014-04-28T13:46:17  *** mikef2 has quit IRC
+2014-04-28T13:46:22  *** bkuberek_ has quit IRC
+2014-04-28T13:47:02  *** Maddin_ has joined #nginx
+2014-04-28T13:47:21  *** bkuberek has joined #nginx
+2014-04-28T13:47:36  *** ndrei has quit IRC
+2014-04-28T13:50:14  *** mikef2 has joined #nginx
+2014-04-28T13:51:01  *** egis has joined #nginx
+2014-04-28T13:52:08  *** Arkadietz has quit IRC
+2014-04-28T13:52:54  *** neonstalwart1 has left #nginx
+2014-04-28T13:53:13  *** oh2lre has joined #nginx
+2014-04-28T13:55:12  *** Arkadietz has joined #nginx
+2014-04-28T13:55:30  *** shad0VV has quit IRC
+2014-04-28T13:57:41  *** crystal77 has quit IRC
+2014-04-28T13:58:55  *** crystal77 has joined #nginx
+2014-04-28T14:00:16  *** shad0VV has joined #nginx
+2014-04-28T14:00:55  *** Jevermeister has joined #nginx
+2014-04-28T14:02:03  *** [diecast] has joined #nginx
+2014-04-28T14:04:10  *** roentgen has joined #nginx
+2014-04-28T14:04:45  *** Annak has joined #nginx
+2014-04-28T14:06:02  *** [diecast] has joined #nginx
+2014-04-28T14:06:21  *** kjf has joined #nginx
+2014-04-28T14:07:18  *** Diemuzi has quit IRC
+2014-04-28T14:07:22  *** Annak is now known as Diemuzi
+2014-04-28T14:08:21  *** andrew00david has quit IRC
+2014-04-28T14:10:30  *** Alina-malina has quit IRC
+2014-04-28T14:11:57  *** ub1quit33 has joined #nginx
+2014-04-28T14:12:28  *** `VL has joined #nginx
+2014-04-28T14:16:01  *** bkuberek_ has joined #nginx
+2014-04-28T14:16:18  *** shad0VV has quit IRC
+2014-04-28T14:18:18  *** bkuberek has quit IRC
+2014-04-28T14:19:48  *** crystal77 has quit IRC
+2014-04-28T14:20:13  *** Alina-malina has joined #nginx
+2014-04-28T14:20:54  *** mustu has quit IRC
+2014-04-28T14:21:00  *** balboah has joined #nginx
+2014-04-28T14:21:28  *** ndrei has joined #nginx
+2014-04-28T14:21:42  *** mikef2 has quit IRC
+2014-04-28T14:21:56  *** MultiColourPixel has quit IRC
+2014-04-28T14:22:21  *** shad0VV has joined #nginx
+2014-04-28T14:26:15  *** mikef2 has joined #nginx
+2014-04-28T14:26:38  *** shad0VV has quit IRC
+2014-04-28T14:26:51  *** matiskay has quit IRC
+2014-04-28T14:28:35  *** MultiColourPixel has joined #nginx
+2014-04-28T14:30:55  *** crystal77 has joined #nginx
+2014-04-28T14:31:06  *** davispuh has joined #nginx
+2014-04-28T14:32:49  *** shad0VV has joined #nginx
+2014-04-28T14:37:35  *** crystal77 has quit IRC
+2014-04-28T14:38:18  *** davispuh has quit IRC
+2014-04-28T14:38:24  *** jaequery has quit IRC
+2014-04-28T14:39:25  *** Jevermeister has quit IRC
+2014-04-28T14:40:04  *** davispuh has joined #nginx
+2014-04-28T14:40:59  *** crystal77 has joined #nginx
+2014-04-28T14:41:38  *** Sivik has quit IRC
+2014-04-28T14:41:55  *** [EddyF] has joined #nginx
+2014-04-28T14:42:00  *** davispuh has quit IRC
+2014-04-28T14:42:04  *** crystal77 has quit IRC
+2014-04-28T14:42:19  *** [EddyF] is now known as Guest74006
+2014-04-28T14:44:14  *** MultiColourPixel has quit IRC
+2014-04-28T14:44:25  *** mire_ has joined #nginx
+2014-04-28T14:45:47  *** crystal77 has joined #nginx
+2014-04-28T14:49:44  *** balboah has quit IRC
+2014-04-28T14:50:32  *** crystal77 has quit IRC
+2014-04-28T14:54:01  *** crystal77 has joined #nginx
+2014-04-28T15:00:04  *** KernelCurry has joined #nginx
+2014-04-28T15:00:35  *** crystal77 has quit IRC
+2014-04-28T15:02:19  *** crystal77 has joined #nginx
+2014-04-28T15:03:12  *** penk has quit IRC
+2014-04-28T15:05:09  *** crystal77 has quit IRC
+2014-04-28T15:06:29  *** crystal77 has joined #nginx
+2014-04-28T15:07:40  *** ethlor has joined #nginx
+2014-04-28T15:10:44  *** sc_ has quit IRC
+2014-04-28T15:14:35  *** MultiColourPixel has joined #nginx
+2014-04-28T15:15:44  *** mikecmpbll has quit IRC
+2014-04-28T15:16:50  *** grzany has joined #nginx
+2014-04-28T15:18:33  *** crystal77 has quit IRC
+2014-04-28T15:19:49  *** gffa has quit IRC
+2014-04-28T15:21:04  *** Guest41356 has quit IRC
+2014-04-28T15:21:11  *** smorin has joined #nginx
+2014-04-28T15:21:18  *** grzany has quit IRC
+2014-04-28T15:21:50  *** crystal77 has joined #nginx
+2014-04-28T15:22:21  *** mdw has quit IRC
+2014-04-28T15:22:36  *** smorin has quit IRC
+2014-04-28T15:23:08  *** mikecmpbll has joined #nginx
+2014-04-28T15:23:21  *** crystal77 has quit IRC
+2014-04-28T15:25:06  *** chipotle has quit IRC
+2014-04-28T15:25:15  *** mdw has joined #nginx
+2014-04-28T15:26:20  *** SergioMeneses has joined #nginx
+2014-04-28T15:26:33  *** john_776 has joined #nginx
+2014-04-28T15:27:15  *** sc_ has joined #nginx
+2014-04-28T15:30:20  *** crystal77 has joined #nginx
+2014-04-28T15:32:19  *** manuel_____ has quit IRC
+2014-04-28T15:32:30  *** smorin has joined #nginx
+2014-04-28T15:37:58  *** jnehlmeier has joined #nginx
+2014-04-28T15:38:03  *** Otacon22 has quit IRC
+2014-04-28T15:38:28  *** mikef2 has quit IRC
+2014-04-28T15:41:49  *** akolesen has joined #nginx
+2014-04-28T15:44:57  *** Korvus is now known as the
+2014-04-28T15:45:08  *** the is now known as Korvus
+2014-04-28T15:47:18  *** enquora has quit IRC
+2014-04-28T15:49:55  <Pumpkin-> apologies for the likely stupid questions
+2014-04-28T15:50:22  <jobarte> [Pumpkin-]: when lol is lol?
+2014-04-28T15:50:33  <jobarte> hahaha, joke =)
+2014-04-28T15:50:48  <jobarte> are you know how to test if x-sendfile is working fine?
+2014-04-28T15:51:22  *** danecando has quit IRC
+2014-04-28T15:51:32  <jobarte> I saw in a past that with x-sendfile is possible to pause and resume downloads, but I don't found this on official documentation
+2014-04-28T15:52:04  *** akolesen has quit IRC
+2014-04-28T15:52:22  <Pumpkin-> I assume the client can just make a byte range request like normal
+2014-04-28T15:52:33  <Pumpkin-> and it will just work. Not familar with x-sendfile specifically
+2014-04-28T15:53:16  *** Sound has quit IRC
+2014-04-28T15:53:53  *** frostschutz has joined #nginx
+2014-04-28T15:54:46  *** skcin7_ has joined #nginx
+2014-04-28T15:55:07  *** skcin7 has quit IRC
+2014-04-28T16:00:57  *** ub1quit33 has quit IRC
+2014-04-28T16:02:18  *** AnimeCYC has quit IRC
+2014-04-28T16:02:58  *** oozbooz has quit IRC
+2014-04-28T16:04:05  *** whitebook has joined #nginx
+2014-04-28T16:04:18  *** NeO__o has quit IRC
+2014-04-28T16:04:51  *** mikecmpbll has quit IRC
+2014-04-28T16:05:42  *** Diemuzi|2 has joined #nginx
+2014-04-28T16:06:18  *** klein has quit IRC
+2014-04-28T16:06:19  *** jobarte has quit IRC
+2014-04-28T16:08:22  *** AnimeCYC has joined #nginx
+2014-04-28T16:08:41  *** ajprog_laptop has quit IRC
+2014-04-28T16:09:12  *** Diemuzi has quit IRC
+2014-04-28T16:11:04  *** Diemuzi has joined #nginx
+2014-04-28T16:12:53  *** Diemuzi|2 has quit IRC
+2014-04-28T16:13:22  *** ub1quit33_ has joined #nginx
+2014-04-28T16:13:54  *** ub1quit33_ has quit IRC
+2014-04-28T16:15:37  *** chacal has quit IRC
+2014-04-28T16:15:45  *** davispuh has joined #nginx
+2014-04-28T16:21:13  *** mikecmpbll has joined #nginx
+2014-04-28T16:23:52  *** whitebook has quit IRC
+2014-04-28T16:26:34  *** davispuh has quit IRC
+2014-04-28T16:26:58  *** hellopat has quit IRC
+2014-04-28T16:31:27  *** mdw has quit IRC
+2014-04-28T16:32:08  *** ub1quit33 has joined #nginx
+2014-04-28T16:35:32  *** jobarte has joined #nginx
+2014-04-28T16:36:37  *** shubhang has quit IRC
+2014-04-28T16:38:53  *** davispuh has joined #nginx
+2014-04-28T16:39:34  *** quattro_ has quit IRC
+2014-04-28T16:41:21  *** davispuh has quit IRC
+2014-04-28T16:42:03  *** gusto has quit IRC
+2014-04-28T16:42:16  *** MultiColourPixel has quit IRC
+2014-04-28T16:43:06  *** egis has quit IRC
+2014-04-28T16:43:53  *** fossxplorer has joined #nginx
+2014-04-28T16:43:53  *** fossxplorer has quit IRC
+2014-04-28T16:43:53  *** fossxplorer has joined #nginx
+2014-04-28T16:45:05  <fossxplorer> Using Nginx as both reverse proxy and web server, my app installed at the backend (Nginx web server) sends it's IP rather than proxy's when communicating from the app.
+2014-04-28T16:45:06  *** livingstn has quit IRC
+2014-04-28T16:45:42  <fossxplorer> Is there a way to force usage of proxy's IP when the backend app communicates to the outside world?
+2014-04-28T16:46:45  <[MT]> fossxplorer: https://rtcamp.com/tutorials/nginx/forwarding-visitors-real-ip/
+2014-04-28T16:46:48  <[MT]> !realip
+2014-04-28T16:46:48  <ngxbot> 
+2014-04-28T16:47:06  *** netcarver has quit IRC
+2014-04-28T16:47:12  *** wa5ted has quit IRC
+2014-04-28T16:47:30  <[MT]> this is better... http://nginx.org/en/docs/http/ngx_http_realip_module.html
+2014-04-28T16:47:41  <fossxplorer> Ok, thx.
+2014-04-28T16:49:12  *** tobi__ has joined #nginx
+2014-04-28T16:51:30  *** ocherno has joined #nginx
+2014-04-28T16:52:01  *** Nikolas has quit IRC
+2014-04-28T16:52:16  <fossxplorer> Hmm, this is not my issue. Perhaps i wasn't clear, but when the backend app communicates with the outside world, i want it to use the proxy's IP, i.e the web site's IP
+2014-04-28T16:53:41  *** Diemuzi has quit IRC
+2014-04-28T16:56:03  *** vlad_starkov has joined #nginx
+2014-04-28T16:57:49  *** bkuberek has joined #nginx
+2014-04-28T17:00:48  *** huglester has joined #nginx
+2014-04-28T17:00:53  *** moju has quit IRC
+2014-04-28T17:01:06  *** bkuberek_ has quit IRC
+2014-04-28T17:01:37  *** Zesty has joined #nginx
+2014-04-28T17:02:27  *** bkuberek has quit IRC
+2014-04-28T17:04:19  <jobarte> thanks Pumpkin-
+2014-04-28T17:05:40  *** toastedpenguin has quit IRC
+2014-04-28T17:05:58  *** mary_synthesizin has quit IRC
+2014-04-28T17:06:39  *** voidfire has quit IRC
+2014-04-28T17:07:14  *** moju has joined #nginx
+2014-04-28T17:10:53  *** mdhopkins has quit IRC
+2014-04-28T17:11:06  *** ndrei has quit IRC
+2014-04-28T17:11:46  *** ndrei has joined #nginx
+2014-04-28T17:14:24  *** smorin has quit IRC
+2014-04-28T17:15:37  <mdeboard> np snuggles
+2014-04-28T17:16:12  *** dobalina has quit IRC
+2014-04-28T17:18:06  *** maximski has quit IRC
+2014-04-28T17:21:41  *** mjsmith2 has quit IRC
+2014-04-28T17:24:30  *** ocherno has quit IRC
+2014-04-28T17:24:47  <fossxplorer>  /join #whmcs
+2014-04-28T17:25:08  <fossxplorer> ups, a space ^
+2014-04-28T17:25:14  *** Milly_Bays has joined #nginx
+2014-04-28T17:25:18  *** mikeybisbo has joined #nginx
+2014-04-28T17:25:29  *** crystal77 has quit IRC
+2014-04-28T17:29:38  *** [diecast] has quit IRC
+2014-04-28T17:30:10  *** [diecast] has joined #nginx
+2014-04-28T17:33:17  *** Zesty has quit IRC
+2014-04-28T17:34:14  *** menakite has quit IRC
+2014-04-28T17:36:13  *** ogny has quit IRC
+2014-04-28T17:38:09  *** vlad_starkov has quit IRC
+2014-04-28T17:39:46  *** crystal77 has joined #nginx
+2014-04-28T17:39:53  *** showaz has quit IRC
+2014-04-28T17:46:10  *** Luke_ has joined #nginx
+2014-04-28T17:46:23  *** MultiColourPixel has joined #nginx
+2014-04-28T17:46:23  *** [diecast] has quit IRC
+2014-04-28T17:48:31  *** anaconda has joined #nginx
+2014-04-28T17:48:46  *** MultiColourPixel has quit IRC
+2014-04-28T17:51:45  *** whitebook1 has joined #nginx
+2014-04-28T17:52:52  *** knownasilya has quit IRC
+2014-04-28T17:54:08  *** JerryT has quit IRC
+2014-04-28T17:54:43  *** dman777_alter has quit IRC
+2014-04-28T17:56:11  *** MultiColourPixel has joined #nginx
+2014-04-28T17:56:59  *** MultiColourPixel has joined #nginx
+2014-04-28T18:00:42  *** SergioMeneses has quit IRC
+2014-04-28T18:01:28  *** WALoeIII has joined #nginx
+2014-04-28T18:01:53  *** frostschutz has quit IRC
+2014-04-28T18:02:24  *** bakflash has quit IRC
+2014-04-28T18:03:17  *** tobi__ has quit IRC
+2014-04-28T18:06:20  *** arietis has joined #nginx
+2014-04-28T18:08:58  *** whitebook1 has quit IRC
+2014-04-28T18:10:29  *** mdeboard has quit IRC
+2014-04-28T18:11:06  *** mdeboard has joined #nginx
+2014-04-28T18:11:18  *** michaelneale has joined #nginx
+2014-04-28T18:11:36  *** mdeboard has quit IRC
+2014-04-28T18:12:01  *** mdeboard has joined #nginx
+2014-04-28T18:16:14  *** arietis has quit IRC
+2014-04-28T18:22:15  *** ajprog_laptop has joined #nginx
+2014-04-28T18:23:41  *** fossxplorer has quit IRC
+2014-04-28T18:26:00  *** AnimeCYC has quit IRC
+2014-04-28T18:28:29  *** vlad_starkov has joined #nginx
+2014-04-28T18:29:08  *** valgrind has quit IRC
+2014-04-28T18:32:34  *** bctrainers has quit IRC
+2014-04-28T18:33:24  *** vlad_starkov has quit IRC
+2014-04-28T18:35:15  *** E1ven has quit IRC
+2014-04-28T18:40:32  <huglester> Hello... can someone help me with fastcgi caching? I have fastcgi_ignore_headers X-Accel-Expires Expires Cache-Control Set-Cookie; this line set.. but X-Cache-Status still returns BYPASS...
+2014-04-28T18:40:46  <huglester> Not sure where to look more, I tripple checked all the configs
+2014-04-28T18:41:47  <huglester> I have pasted portion of config here: http://p.ngx.cc/6ce0b30e404b6e7c
+2014-04-28T18:42:22  <huglester> if I change: fastcgi_cache_bypass $skip_cache; to 0 - I get cache on whole site... but currently I need only on /files/* url
+2014-04-28T18:43:23  *** mikecmpbll has quit IRC
+2014-04-28T18:44:58  *** Klapo has quit IRC
+2014-04-28T18:45:08  *** hasB4K has quit IRC
+2014-04-28T18:45:42  *** Klapo has joined #nginx
+2014-04-28T18:45:50  *** hasB4K has joined #nginx
+2014-04-28T18:47:04  *** crystal77 has quit IRC
+2014-04-28T18:50:33  *** c0ded has quit IRC
+2014-04-28T18:51:13  *** jnehlmeier_ has joined #nginx
+2014-04-28T18:53:36  *** WALoeIII has quit IRC
+2014-04-28T18:54:00  *** jnehlmeier has quit IRC
+2014-04-28T18:55:07  *** kamyl has joined #nginx
+2014-04-28T18:55:08  *** offby1 has joined #nginx
+2014-04-28T18:57:09  *** SpNg has quit IRC
+2014-04-28T18:57:30  *** mcdoulett has joined #nginx
+2014-04-28T18:57:59  *** skcin7_ has quit IRC
+2014-04-28T18:58:30  *** skcin7 has joined #nginx
+2014-04-28T19:02:18  *** codabrink has quit IRC
+2014-04-28T19:03:53  *** chipotle has joined #nginx
+2014-04-28T19:04:10  *** skcin7 has quit IRC
+2014-04-28T19:06:11  *** grep0r has quit IRC
+2014-04-28T19:08:55  *** grep0r has joined #nginx
+2014-04-28T19:10:19  *** jovy88 has quit IRC
+2014-04-28T19:10:36  *** michael_mbp has quit IRC
+2014-04-28T19:10:59  *** orlock has quit IRC
+2014-04-28T19:11:06  *** monokrome has quit IRC
+2014-04-28T19:11:25  *** jovy88 has joined #nginx
+2014-04-28T19:11:25  *** Ac-town has quit IRC
+2014-04-28T19:11:59  <offby1> I find myself about to create a config file that looks like https://gist.github.com/11387629 -- namely, doing reverse-proxy to a bunch of different hosts, choosing the host based on the URL.  This feel bizarre.  Is it sensible, crazy, or what?
+2014-04-28T19:12:12  <offby1> (I might wind up with about 100 entries)
+2014-04-28T19:12:48  *** label has quit IRC
+2014-04-28T19:13:37  <jaybe> offby1, perhaps you could use regular expressions.  nginx.org/r/location
+2014-04-28T19:13:38  *** michael_mbp has joined #nginx
+2014-04-28T19:13:40  *** niq has joined #nginx
+2014-04-28T19:15:53  *** jnehlmeier_ has quit IRC
+2014-04-28T19:16:14  *** mrvisser has quit IRC
+2014-04-28T19:16:27  *** sheki has quit IRC
+2014-04-28T19:16:48  *** crystal77 has joined #nginx
+2014-04-28T19:16:56  <ngxbot> Paste from jaybe: [ http://p.ngx.cc/49 ] - offby1
+2014-04-28T19:18:24  *** grzany has joined #nginx
+2014-04-28T19:20:43  <mdeboard> offby1: Yep, regex or map
+2014-04-28T19:21:14  <mdeboard> or regex and map
+2014-04-28T19:21:17  *** ollivera has quit IRC
+2014-04-28T19:21:43  *** ollivera has joined #nginx
+2014-04-28T19:21:56  *** sheki has joined #nginx
+2014-04-28T19:22:30  *** Coburn has joined #nginx
+2014-04-28T19:22:36  <offby1> ooh, thanks
+2014-04-28T19:22:47  *** grzany has quit IRC
+2014-04-28T19:22:59  <offby1> aaaah, capture the group into a variable, then use it.  Of course.  Thanks.
+2014-04-28T19:23:06  <jaybe> offby1, you're welcome
+2014-04-28T19:23:07  *** thewiz__ has joined #nginx
+2014-04-28T19:23:16  <thewiz__> hell
+2014-04-28T19:23:17  <thewiz__> o
+2014-04-28T19:23:31  <mdeboard> Only use I've had for map so far is cookie-based sticky sessions
+2014-04-28T19:23:32  *** deevus has quit IRC
+2014-04-28T19:23:43  <thewiz__> im trying to make it so that a node.js app works through port 80 with nginx
+2014-04-28T19:23:54  <thewiz__> right now it only does ip:3000
+2014-04-28T19:23:55  <jaybe> thewiz__, nginx.org/r/proxy_pass
+2014-04-28T19:24:06  *** Ac-town has joined #nginx
+2014-04-28T19:24:48  *** orlock has joined #nginx
+2014-04-28T19:24:59  <Coburn> Just a quick question - on the wiki, one security measure for PHP is "not to allow PHP scripts to be run inside image folders". Some script kiddies exploit gallery script upload scripts and put their shells in there, then access it. Is it possible for nginx to be the watchdog and say "Hey, that script is inside a image folder, 404 time"
+2014-04-28T19:25:16  *** johnkevinmbasco has joined #nginx
+2014-04-28T19:25:37  <Coburn> In other words, if the path contains ".php" and also contains "images", then either 404 or 403 you shall not pass?
+2014-04-28T19:26:11  <Coburn> because then if a kiddie goes to somesite/images/mykewlshell.php, nginx says 403
+2014-04-28T19:26:24  *** monokrome has joined #nginx
+2014-04-28T19:26:55  <Coburn> although, it would need to be also recursive, because I remember a joomla website get compromised and the scripts were in images/stories/ex.php
+2014-04-28T19:27:44  *** huglester has quit IRC
+2014-04-28T19:28:02  <jaybe> Coburn, you can do it however you want. basing it on the term "image" being in the URI is pretty vague and weak however
+2014-04-28T19:28:31  <Coburn> true. what would be a better plan of attack?
+2014-04-28T19:28:42  <Coburn> And ofc, keep your software up to date
+2014-04-28T19:28:44  <Coburn> :P
+2014-04-28T19:28:45  *** deevus has joined #nginx
+2014-04-28T19:28:52  <mdeboard> Coburn: Secure the folder in question and don't put PHP files in it
+2014-04-28T19:28:53  <mdeboard> :P
+2014-04-28T19:29:18  *** vlad_starkov has joined #nginx
+2014-04-28T19:29:31  *** jareddlc has quit IRC
+2014-04-28T19:29:38  <Coburn> Well, this is shared hosting
+2014-04-28T19:30:21  <jaybe> Coburn, it totally depends on you, your 'app', the way you do things, etc. ideally - you put PHP crap in /jailed/php or the likes. and/or you limit php to just the 'app' (/wordpress), etc.
+2014-04-28T19:30:26  <mdeboard> Coburn: Your app shouldn't allow uploading of .php files
+2014-04-28T19:30:35  <mdeboard> I'm probably misunderstanding, I'll go away
+2014-04-28T19:31:20  <Coburn> mdeboard: no no
+2014-04-28T19:31:23  <Coburn> You're correct
+2014-04-28T19:31:46  <thewiz__> im so stuck with the whole port 80 thing
+2014-04-28T19:31:46  <Coburn> the app shouldn't allow uploading of PHP files, but well... it was exploited
+2014-04-28T19:32:04  <Coburn> joomla actually was being exploited through the file manager, and then image manager
+2014-04-28T19:32:12  <Coburn> so yeah ^^;
+2014-04-28T19:32:21  <Coburn> but joomla is a piece of shit so
+2014-04-28T19:33:26  <thewiz__> how do i make localhost:3000 localhost:80
+2014-04-28T19:33:30  <jaybe> thewiz__, nginx.org/r/listen
+2014-04-28T19:33:36  *** roentgen has quit IRC
+2014-04-28T19:33:39  <mdeboard> Coburn: https://gist.github.com/mattdeboard/3a9d02f62eafc57e6a3f ?
+2014-04-28T19:33:50  <mdeboard> jaybe: ^ ?
+2014-04-28T19:34:16  *** vlad_starkov has quit IRC
+2014-04-28T19:34:51  <jaybe> location /images { location ~* \.php { deny all; } ...; }
+2014-04-28T19:34:58  <mdeboard> Oh wait, what
+2014-04-28T19:35:01  <mdeboard> you can nest location
+2014-04-28T19:35:03  <mdeboard> Wow
+2014-04-28T19:35:10  <jaybe> nginx.org/r/location
+2014-04-28T19:35:12  <mdeboard> Welp I'm an idiot who can't read docs
+2014-04-28T19:35:24  *** label has joined #nginx
+2014-04-28T19:35:56  <jaybe> frankly, when i have to use php, i use `map` and explicitly allow individual php and anything/everything else is denied by default.
+2014-04-28T19:36:15  <mdeboard> That's an interesting way
+2014-04-28T19:36:41  * [MT] hasn't heard of that before. Not a bad idea.
+2014-04-28T19:36:48  *** dominikto has quit IRC
+2014-04-28T19:38:49  *** Hounddog has quit IRC
+2014-04-28T19:39:54  *** hazardous has quit IRC
+2014-04-28T19:39:57  *** ollivera has quit IRC
+2014-04-28T19:40:20  <mdeboard> I only just discovered map a few weeks ago so that probably has something to do with it
+2014-04-28T19:40:28  *** ollivera has joined #nginx
+2014-04-28T19:40:31  <mdeboard> Is there a baked-in variety of http://wiki.nginx.org/HttpUploadModule yet/now?
+2014-04-28T19:40:46  <kolbyjack> Or just set up your app like other languages, and keep your php files separate from your static assets, and everything separate from user uploads
+2014-04-28T19:42:55  *** toxboi has joined #nginx
+2014-04-28T19:42:55  *** toxboi has quit IRC
+2014-04-28T19:42:56  *** toxboi has joined #nginx
+2014-04-28T19:44:49  *** E1ven has joined #nginx
+2014-04-28T19:46:10  *** hazardous has joined #nginx
+2014-04-28T19:46:30  *** label has quit IRC
+2014-04-28T19:47:50  *** E1ven has quit IRC
+2014-04-28T19:48:21  *** E1ven has joined #nginx
+2014-04-28T19:48:25  *** E1ven has quit IRC
+2014-04-28T19:48:56  *** E1ven has joined #nginx
+2014-04-28T19:49:32  *** E1ven has joined #nginx
+2014-04-28T19:52:07  <chipotle> hi, this is my drupal microcaching tempalte file, that i took from another working server. i'm trying to put it on a new aws ec2 server, but i get errors with nginx -t which don't happen if i uncomment out the include drupal_mc line: https://gist.github.com/cmejo/11388172
+2014-04-28T19:52:10  *** Linux_Asylum has quit IRC
+2014-04-28T19:52:11  <chipotle> can someone shed some light on what's going on?
+2014-04-28T19:52:35  <chipotle> i asumme it's because i haven't created a cache folder, but that config doesn't seem to point to any caching folder...?
+2014-04-28T19:52:37  *** Linux_Asylum has joined #nginx
+2014-04-28T19:54:14  <mdeboard> chipotle: I don't see an "include drupal_mc" line ?
+2014-04-28T19:54:27  *** also has quit IRC
+2014-04-28T19:54:43  *** MultiColourPixel has quit IRC
+2014-04-28T19:56:04  <chipotle> mdeboard: here is the vhost config file, the drupal_mc file and nginx.conf file: https://gist.github.com/cmejo/11388172
+2014-04-28T19:56:24  *** john2x has joined #nginx
+2014-04-28T19:56:46  <chipotle> this is what i get when i do nginx -t
+2014-04-28T19:56:46  <mdeboard> I mean, does the drupal_mc file exist?
+2014-04-28T19:56:47  <chipotle> nginx: [emerg] "fastcgi_cache" zone "microcache" is unknown in /etc/nginx/nginx.conf:73
+2014-04-28T19:56:54  <chipotle> yes, it's inside /etc/nginx
+2014-04-28T19:57:01  <chipotle> nginx: configuration file /etc/nginx/nginx.conf test failed
+2014-04-28T19:57:06  <chipotle> but line 73 is just whitespace in the nginx.conf
+2014-04-28T19:57:44  *** mfjordvald has joined #nginx
+2014-04-28T19:58:46  <chipotle> if i comment out the line include drupal_mc; nginx loads fine...
+2014-04-28T19:59:21  <mdeboard> I have no familiarity with fastcgi but it looks like there's a variable that doesn't work
+2014-04-28T19:59:34  <chipotle> i'm using fpm instead of fastcgi
+2014-04-28T19:59:35  <chipotle> or should be, at least
+2014-04-28T19:59:38  *** meson10 has joined #nginx
+2014-04-28T19:59:52  <mdeboard> "microcache" isn't a valid value for fastcgi_cache
+2014-04-28T20:00:26  <mdeboard> I assume
+2014-04-28T20:00:55  <chipotle> hm, so what do i need to do change it?
+2014-04-28T20:01:01  <chipotle> i should be using fpm anyway
+2014-04-28T20:01:02  *** orlock has left #nginx
+2014-04-28T20:01:19  <chipotle> i don't understand what went so wrong :/
+2014-04-28T20:01:36  *** ollivera has quit IRC
+2014-04-28T20:01:39  *** [1]Seph has joined #nginx
+2014-04-28T20:01:39  *** zerick has quit IRC
+2014-04-28T20:02:14  *** anfernee has joined #nginx
+2014-04-28T20:02:21  *** john2x_ has joined #nginx
+2014-04-28T20:02:50  *** also has joined #nginx
+2014-04-28T20:02:51  <mdeboard> Sorry, lost connection.
+2014-04-28T20:03:00  <mdeboard> Who was the guy asking about fastcgi_cache
+2014-04-28T20:03:21  *** aburan28 has joined #nginx
+2014-04-28T20:03:32  <mdeboard> Knowing nothing about fastcgi and only googling like 2 minutes, it looks like you would need to define a "key_zone"
+2014-04-28T20:03:43  <mdeboard> and th ename of that "key_zone" would be the value of fastcgi_cache
+2014-04-28T20:03:46  <mdeboard> https://rtcamp.com/wordpress-nginx/tutorials/single-site/fastcgi-cache-with-purging/
+2014-04-28T20:04:16  *** Es0teric has quit IRC
+2014-04-28T20:04:41  *** CoreISP has joined #nginx
+2014-04-28T20:05:21  *** mfjordvald has quit IRC
+2014-04-28T20:05:36  *** edulix has quit IRC
+2014-04-28T20:05:46  *** CoreISP has joined #nginx
+2014-04-28T20:05:48  *** john2x has quit IRC
+2014-04-28T20:06:07  *** CoreISP has joined #nginx
+2014-04-28T20:06:15  *** koell has joined #nginx
+2014-04-28T20:07:41  *** Es0teric has joined #nginx
+2014-04-28T20:08:00  *** anfernee has quit IRC
+2014-04-28T20:08:09  *** smorin has joined #nginx
+2014-04-28T20:08:10  *** Es0teric has quit IRC
+2014-04-28T20:08:16  *** thewiz__ has quit IRC
+2014-04-28T20:08:28  *** ollivera has joined #nginx
+2014-04-28T20:08:29  *** [2]Seph has joined #nginx
+2014-04-28T20:09:04  *** JerryT has joined #nginx
+2014-04-28T20:09:11  *** klein has joined #nginx
+2014-04-28T20:09:12  *** klein has joined #nginx
+2014-04-28T20:09:12  <chipotle> sigh, i am so lost
+2014-04-28T20:09:19  <chipotle> i don't understand what is going wrong
+2014-04-28T20:09:23  <chipotle> everything was fine until yesterday
+2014-04-28T20:09:32  <chipotle> now i'm on a brand new aws ec2 and i can't get anything to work!
+2014-04-28T20:09:35  *** JerryT has quit IRC
+2014-04-28T20:09:36  *** alexwhitman has quit IRC
+2014-04-28T20:10:03  *** [1]Seph has quit IRC
+2014-04-28T20:11:17  *** Es0teric has joined #nginx
+2014-04-28T20:12:08  *** koell has quit IRC
+2014-04-28T20:14:17  *** danecando has joined #nginx
+2014-04-28T20:14:47  *** johnkevinmbasco has quit IRC
+2014-04-28T20:16:24  *** toxboi has quit IRC
+2014-04-28T20:18:37  *** Skrypter has quit IRC
+2014-04-28T20:20:33  *** themagician has quit IRC
+2014-04-28T20:21:25  *** Skrypter has joined #nginx
+2014-04-28T20:22:04  *** toxboi has joined #nginx
+2014-04-28T20:25:54  *** kern has joined #nginx
+2014-04-28T20:26:19  *** mathu has quit IRC
+2014-04-28T20:26:36  *** mdw has joined #nginx
+2014-04-28T20:26:49  *** mrvisser has joined #nginx
+2014-04-28T20:27:22  *** JerryT has joined #nginx
+2014-04-28T20:28:30  <mdeboard> chipotle: Did you see what I put above
+2014-04-28T20:28:38  <chipotle> mdeboard: yes, but i'm still lost
+2014-04-28T20:29:05  <mdeboard> Maybe ask in #php or whatever channel
+2014-04-28T20:29:10  <mdeboard> is the right one for PHP questions
+2014-04-28T20:29:14  <mdeboard> I really dunno
+2014-04-28T20:29:23  <chipotle> it's okay, thanks
+2014-04-28T20:29:28  <chipotle> i'm going to bang my head up against a wall now
+2014-04-28T20:31:05  *** jovy88 has quit IRC
+2014-04-28T20:31:11  *** toxboi has quit IRC
+2014-04-28T20:31:14  <chipotle> i'm super frustrated
+2014-04-28T20:31:48  *** jovy88 has joined #nginx
+2014-04-28T20:31:59  *** mrvisser has quit IRC
+2014-04-28T20:32:00  *** mdw has quit IRC
+2014-04-28T20:34:01  *** mdw has joined #nginx
+2014-04-28T20:34:45  *** sheki has quit IRC
+2014-04-28T20:35:18  *** Mister_X] has quit IRC
+2014-04-28T20:35:27  *** [2]Seph is now known as mfjordvald
+2014-04-28T20:35:32  *** _ikke_ has quit IRC
+2014-04-28T20:36:07  <john_776> Very glad to say that I've just managed to get my first install of nginx working (Ubuntu 14) with PHP after only 6 hours. Night all :-)
+2014-04-28T20:36:20  <chipotle> john_776: congrats
+2014-04-28T20:36:26  <Kamilion> apt-get install nginx php5-fpm ?
+2014-04-28T20:37:02  *** edulix has joined #nginx
+2014-04-28T20:37:28  *** [1]Seph has joined #nginx
+2014-04-28T20:37:49  <john_776> chipotle: Cheers. Kamilion: That was the easy bit it was the config/error debugging and everything else but once the error logs came in things went quite quickly :-)
+2014-04-28T20:38:08  <Kamilion> ahh
+2014-04-28T20:38:25  *** alexwhitman has joined #nginx
+2014-04-28T20:38:35  <Kamilion> i've had almost no problems at all since 12.04... ubuntu started preconfiguring the packages correctly.
+2014-04-28T20:39:10  *** showaz has joined #nginx
+2014-04-28T20:39:38  *** mfjordvald has quit IRC
+2014-04-28T20:40:17  *** toxboi has joined #nginx
+2014-04-28T20:40:38  *** Mister_X] has joined #nginx
+2014-04-28T20:41:24  *** _ikke_ has joined #nginx
+2014-04-28T20:41:27  *** koell has joined #nginx
+2014-04-28T20:43:02  *** danecando has quit IRC
+2014-04-28T20:43:54  *** zivester has joined #nginx
+2014-04-28T20:44:55  <[MT]> !dummies | john_776 #
+2014-04-28T20:44:55  <ngxbot> john_776 #: Dummies guide to a common setup on resource limited servers. http://michael.lustfield.net/nginx/dummies-guide-to-setting-up-nginx
+2014-04-28T20:45:22  *** tigerz has joined #nginx
+2014-04-28T20:46:27  *** KernelCurry has quit IRC
+2014-04-28T20:48:04  *** john_776 has quit IRC
+2014-04-28T20:49:02  *** sheki has joined #nginx
+2014-04-28T20:50:51  *** jeffisabelle has quit IRC
+2014-04-28T20:52:33  *** [1]Seph has quit IRC
+2014-04-28T20:52:48  *** michaelneale has quit IRC
+2014-04-28T20:55:29  *** sheki has quit IRC
+2014-04-28T20:59:52  *** chipotle has quit IRC
+2014-04-28T21:00:48  *** Luke_ is now known as Luke
+2014-04-28T21:03:58  *** toxboi has quit IRC
+2014-04-28T21:07:24  *** Linux_Asylum has quit IRC
+2014-04-28T21:07:27  *** AlexPortable has quit IRC
+2014-04-28T21:08:06  *** Linux_Asylum has joined #nginx
+2014-04-28T21:18:30  *** danecando has joined #nginx
+2014-04-28T21:24:40  *** philipballew has joined #nginx
+2014-04-28T21:26:09  *** mire_ has quit IRC
+2014-04-28T21:26:56  *** factoreal has quit IRC
+2014-04-28T21:29:12  *** vlad_starkov has joined #nginx
+2014-04-28T21:34:15  *** vlad_starkov has quit IRC
+2014-04-28T21:35:29  *** toxboi has joined #nginx
+2014-04-28T21:36:14  *** Skrypter has quit IRC
+2014-04-28T21:38:24  *** mdw has quit IRC
+2014-04-28T21:39:09  *** Skrypter has joined #nginx
+2014-04-28T21:43:12  *** teward has quit IRC
+2014-04-28T21:47:10  *** thewiz_ has joined #nginx
+2014-04-28T21:48:27  *** label has joined #nginx
+2014-04-28T21:49:07  <thewiz_> im trying to set up nginx to work with nodejs, here is my config in sites-available/enabled http://pastebin.com/MzbZLgVf but when i access my domain the page just loads forever. the app works on ip:3000 though
+2014-04-28T21:49:14  <thewiz_> what am i doing wrong
+2014-04-28T21:49:19  <jaybe> !p.ngx.cc
+2014-04-28T21:49:19  <ngxbot> For pasting and sharing, #nginx uses: * http://p.ngx.cc/ *. There are other pastebins out there. Many, unfortunately, spam you with ads, javascripts, and filthiness. p.ngx.cc provides- 1) nginx-specific configuration highlighting and linking, 2) No javascript, 3) Interacts with #nginx, 4) No ads. Helpers *trust* visiting p.ngx.cc, and are therefore more likely to try to help you.
+2014-04-28T21:49:52  *** smorin has quit IRC
+2014-04-28T21:50:17  <thewiz_> http://p.ngx.cc/dfae2e44c9d09480
+2014-04-28T21:50:19  *** irmatc has joined #nginx
+2014-04-28T21:50:48  <thewiz_> ignore the stuff after ###
+2014-04-28T21:51:05  *** irmatc has left #nginx
+2014-04-28T21:51:17  *** micko has quit IRC
+2014-04-28T21:52:00  *** crystal77 has quit IRC
+2014-04-28T21:52:04  *** label has quit IRC
+2014-04-28T21:52:22  *** label has joined #nginx
+2014-04-28T21:52:43  *** smorin has joined #nginx
+2014-04-28T21:54:16  *** TeamColtra has quit IRC
+2014-04-28T21:55:55  <jaybe> thewiz_, 1) have you reloaded/restarted nginx?  2) are you using `curl` to test?
+2014-04-28T21:56:12  <thewiz_> yes i restart nginx every time i test something
+2014-04-28T21:56:28  <thewiz_> whats curl?
+2014-04-28T21:56:40  <jaybe> `curl` is the command you should be using to test web crap
+2014-04-28T21:56:55  <thewiz_> i just fire up a firefox that cleans cache on exit
+2014-04-28T21:57:50  *** micko has joined #nginx
+2014-04-28T21:58:00  <programmerq> thewiz_: curl is very clean/clear and makes it super easy to pastebin headers and stuff.
+2014-04-28T21:58:39  <jaybe> and it caches *nothing*
+2014-04-28T21:59:00  <jaybe> don't trust/believe/rely on chrome/firecrotch to actually clear caches and reset things properly
+2014-04-28T21:59:03  *** label_ has joined #nginx
+2014-04-28T21:59:36  *** Skrypter has quit IRC
+2014-04-28T21:59:52  <jaybe> as proxying requests to node is extremely simple, i sense you're likely dealing with a firewall or network issue
+2014-04-28T22:00:45  *** label has quit IRC
+2014-04-28T22:03:28  *** danecando has quit IRC
+2014-04-28T22:03:41  *** label_ has quit IRC
+2014-04-28T22:03:57  *** label has joined #nginx
+2014-04-28T22:04:43  <thewiz_> well for the sake of testing this my server is pretty much opened on all ports
+2014-04-28T22:04:56  *** toxboi has quit IRC
+2014-04-28T22:05:32  <jaybe> care to share the URL/URI?
+2014-04-28T22:07:29  *** label_ has joined #nginx
+2014-04-28T22:08:48  *** hazardous has quit IRC
+2014-04-28T22:09:48  *** toxboi has joined #nginx
+2014-04-28T22:10:00  *** label has quit IRC
+2014-04-28T22:10:53  *** label has joined #nginx
+2014-04-28T22:11:26  *** label_ has quit IRC
+2014-04-28T22:15:53  *** hazardous has joined #nginx
+2014-04-28T22:16:30  *** philipballew has quit IRC
+2014-04-28T22:18:53  *** klein has quit IRC
+2014-04-28T22:19:13  <thewiz_> jaybe: are you still talking to me?
+2014-04-28T22:20:00  *** toxboi has quit IRC
+2014-04-28T22:20:35  *** teward has joined #nginx
+2014-04-28T22:22:02  *** Linux_Asylum has quit IRC
+2014-04-28T22:24:10  *** kern has quit IRC
+2014-04-28T22:27:54  *** toxboi has joined #nginx
+2014-04-28T22:27:56  *** toxboi has quit IRC
+2014-04-28T22:27:56  *** toxboi has joined #nginx
+2014-04-28T22:28:35  *** kjf has quit IRC
+2014-04-28T22:29:30  *** Skrypter has joined #nginx
+2014-04-28T22:29:59  *** vlad_starkov has joined #nginx
+2014-04-28T22:30:05  *** Skrypter has joined #nginx
+2014-04-28T22:30:43  <thewiz_> tried this http://stackoverflow.com/questions/5009324/node-js-nginx-and-now didnt work
+2014-04-28T22:31:47  <jaybe> thewiz_, are you on the server directly? i.e. are you connecting to 127.0.0.1, or are you connecting from elsewhere on the internet to the server?  care to share the URL/URI?
+2014-04-28T22:31:56  <thewiz_> elsewhere
+2014-04-28T22:32:11  *** toxboi has quit IRC
+2014-04-28T22:32:16  <thewiz_> so basically my app is running at 108.80.8.58:3000
+2014-04-28T22:32:37  <thewiz_> and im trying to make it run just on 108.80.8.58
+2014-04-28T22:32:56  <thewiz_> so that i can use a dns/masking service and just have serpnet.ml point to the ip
+2014-04-28T22:33:07  <thewiz_> right now its pointing to the ip
+2014-04-28T22:33:15  <jaybe> thewiz_, is the same machine serving port 80 with nginx?
+2014-04-28T22:33:22  <thewiz_> yeah
+2014-04-28T22:33:47  <jaybe> that machine is not accessible on port 80
+2014-04-28T22:33:58  <jaybe> as i said, a network/firewall issue
+2014-04-28T22:34:00  <thewiz_> probably because im trying to do this http://p.ngx.cc/e31c7eeb627c6975
+2014-04-28T22:34:31  <thewiz_> the machine is fully open, its an nginx issue
+2014-04-28T22:34:52  <jaybe> 1) the IP, 108.80.8.58 is not listening on port 80. and the port is not allowed.  2)  www.serpnet.ml resolves to a different IP address all-together.
+2014-04-28T22:35:09  <jaybe> it's not open; and if you tested it yourself from a remote location, you'd know it too
+2014-04-28T22:35:45  *** vlad_starkov has quit IRC
+2014-04-28T22:35:52  <thewiz_> its opened in the router settings
+2014-04-28T22:35:59  <thewiz_> so nginx is blocking it somehow
+2014-04-28T22:36:06  <jaybe> so my bank account says i have 19 million in savings
+2014-04-28T22:36:24  <thewiz_> like if i were to install apache2 right now it would work through port 80
+2014-04-28T22:36:25  <jaybe> doesn't mean it's true. go try and withdraw.  or try to connect to the port remotely.
+2014-04-28T22:36:44  <jaybe> and again, the host name your describe doesn't even point to that IP
+2014-04-28T22:37:33  <thewiz_> nope
+2014-04-28T22:37:38  <thewiz_> http://108.80.8.58 as in my domain settings
+2014-04-28T22:37:47  <jaybe> sigh
+2014-04-28T22:38:18  <jaybe> www.sepnet.ml = 72.8.190.39, and 72.8.190.126.  those two octets do not equal 108.80.8.58.
+2014-04-28T22:38:21  *** yacks has joined #nginx
+2014-04-28T22:38:51  <thewiz_> serpnet not sepnet
+2014-04-28T22:39:10  <jaybe> www.serpnet.ml = 72.8.190.39, and 72.8.190.126.  those two octets do not equal 108.80.8.58.
+2014-04-28T22:39:51  <thewiz_> regardless though, it doesnt work on its own ip
+2014-04-28T22:39:54  *** steadystatic has joined #nginx
+2014-04-28T22:39:58  <thewiz_> because something is blocking port 80
+2014-04-28T22:40:05  <jaybe> even if it did resolve properly 108.80.5.58 is not accepting connections to port 80
+2014-04-28T22:41:09  <thewiz_> im just gonna reinstall nginx
+2014-04-28T22:41:33  <jaybe> replace the tile in the kitchen too
+2014-04-28T22:43:10  *** Luke has quit IRC
+2014-04-28T22:44:01  *** toxboi has joined #nginx
+2014-04-28T22:45:27  <thewiz_> ill give it a nice sudo reboot as well
+2014-04-28T22:45:32  *** offby1 has left #nginx
+2014-04-28T22:45:42  <thewiz_> because all ports are opened and its just magically not working anymore
+2014-04-28T22:47:58  *** Luke has joined #nginx
+2014-04-28T22:49:33  <programmerq> thewiz_: connection refused usually means nginx is just plain not running
+2014-04-28T22:49:38  <programmerq> or is listening on a port other than 80
+2014-04-28T22:50:52  *** label has quit IRC
+2014-04-28T22:53:51  <thewiz_> i purged it
+2014-04-28T22:53:54  <thewiz_> and it still has my configs
+2014-04-28T22:55:00  *** kevinfag- has joined #nginx
+2014-04-28T22:55:23  *** arietis has joined #nginx
+2014-04-28T22:55:32  *** ajprog_laptop has quit IRC
+2014-04-28T22:55:53  *** acu has quit IRC
+2014-04-28T22:56:46  <thewiz_> why would that happen
+2014-04-28T22:56:51  <thewiz_> so fucking stupid
+2014-04-28T22:56:54  <thewiz_> fucking hate nginx
+2014-04-28T22:58:08  <jaybe> so, your package manager didn't behave as you think you instructed it, so ... you hate nginx...
+2014-04-28T22:58:21  *** Luke has quit IRC
+2014-04-28T22:58:48  *** toxboi has quit IRC
+2014-04-28T22:58:48  <thewiz_> i hate nginx because it works for everyone but me
+2014-04-28T23:04:51  *** mjsmith2 has joined #nginx
+2014-04-28T23:06:18  *** CoreISP has quit IRC
+2014-04-28T23:06:23  *** thewiz_ has left #nginx
+2014-04-28T23:06:46  *** steadystatic has quit IRC
+2014-04-28T23:09:02  *** c0ded has joined #nginx
+2014-04-28T23:09:35  *** c0ded has quit IRC
+2014-04-28T23:09:35  *** c0ded has joined #nginx
+2014-04-28T23:10:02  *** kevinfag- has quit IRC
+2014-04-28T23:11:58  *** zivester has quit IRC
+2014-04-28T23:12:02  *** michaelneale has joined #nginx
+2014-04-28T23:13:51  *** DonRichie has quit IRC
+2014-04-28T23:14:24  *** DonRichie has joined #nginx
+2014-04-28T23:15:11  *** mary_synthesizin has joined #nginx
+2014-04-28T23:18:24  *** aburan28 has quit IRC
+2014-04-28T23:19:59  *** grzany has joined #nginx
+2014-04-28T23:23:23  *** jovy88 has quit IRC
+2014-04-28T23:24:00  *** grzany has quit IRC
+2014-04-28T23:24:07  *** jovy88 has joined #nginx
+2014-04-28T23:24:54  *** vlad_starkov has joined #nginx
+2014-04-28T23:24:57  *** smorin has quit IRC
+2014-04-28T23:27:29  *** label has joined #nginx
+2014-04-28T23:28:28  *** smorin has joined #nginx
+2014-04-28T23:32:23  *** hazardous has quit IRC
+2014-04-28T23:33:11  *** Es0teric has quit IRC
+2014-04-28T23:33:28  <houk> thewiz was a little frustrated there
+2014-04-28T23:33:53  *** label has quit IRC
+2014-04-28T23:34:06  *** label has joined #nginx
+2014-04-28T23:34:35  *** koell has quit IRC
+2014-04-28T23:34:50  *** mary_synthesizin has quit IRC
+2014-04-28T23:35:15  <programmerq> houk: yeah. I even offered some extra help in a PM
+2014-04-28T23:35:19  <programmerq> but he was just done
+2014-04-28T23:35:22  <programmerq> oh well
+2014-04-28T23:35:31  *** hazardous has joined #nginx
+2014-04-28T23:38:52  *** kawa2014 has joined #nginx
+2014-04-28T23:39:12  *** hafeez3000 has joined #nginx
+2014-04-28T23:40:21  *** crystal77 has joined #nginx
+2014-04-28T23:40:39  *** label has quit IRC
+2014-04-28T23:42:00  *** kevinfag- has joined #nginx
+2014-04-28T23:42:32  *** smorin has quit IRC
+2014-04-28T23:45:14  *** subraminion has joined #nginx
+2014-04-28T23:46:16  *** pavol has joined #nginx
+2014-04-28T23:46:58  *** toxboi has joined #nginx
+2014-04-28T23:48:44  *** john2x_ has quit IRC
+2014-04-28T23:49:09  *** label has joined #nginx
+2014-04-28T23:51:17  *** hazardous has quit IRC
+2014-04-28T23:53:03  *** hazardous has joined #nginx
+2014-04-28T23:53:30  *** label has quit IRC
+2014-04-28T23:54:39  *** label has joined #nginx
+2014-04-28T23:55:23  *** label has quit IRC
+2014-04-28T23:57:07  *** arietis has quit IRC
+2014-04-28T23:58:20  *** hazardous has quit IRC
+2014-04-28T23:58:49  *** Rokixz has quit IRC
+2014-04-28T23:59:10  *** mcdoulett has quit IRC
