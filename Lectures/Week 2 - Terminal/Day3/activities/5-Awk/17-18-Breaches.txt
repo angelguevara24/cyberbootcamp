@@ -1,0 +1,29 @@
+COMPANY NAME	YEAR OF BREACH	RECORDS LOST	COMPANY TYPE	METHOD
+AerServ (subsidiary of InMobi)	2018	75,000	advertising	hacked
+Bethesda Game Studios	2018		gaming	accidentally published
+BlankMediaGames	2018	7,633,234	gaming	hacked
+BMO and Simplii	2018	90,000	banking	poor security
+British Airways	2018	380,000	transport	hacked
+Cathay Pacific Airways	2018	9,400,000	transport	hacked
+Centers for Medicare & Medicaid Services	2018	75,000	healthcare	hacked
+Defense Integrated Data Center (South Korea)	2017	235 GB	military	hacked
+Deloitte	2017		consulting, accounting	poor security
+Equifax	2017	143,000,000	financial, credit reporting	poor security
+Erie County Medical Center	2017	unknown	healthcare	poor security
+Facebook	2018	50,000,000	social network	poor security
+Google Plus	2018	500,000	social network	poor security
+Grozio Chirurgija	2017	25,000	healthcare	hacked
+Heathrow Airport	2017	2.5GB	transport	lost / stolen media
+Marriott International	2018	500,000,000	hotel	hacked
+MyHeritage	2018	92,283,889	genealogy	unknown
+Orbitz	2018	880,000	web	hacked
+Popsugar	2018	123,857	fashion	hacked
+Quora	2018	100,000,000	Question & Answer	hacked
+Reddit	2018	unknown	web	hacked
+SingHealth	2018	1,500,000	government, database	hacked
+Taringa!	2017	28,722,877	web	hacked
+Ticketfly (subsidiary of Eventbrite)	2018	26,151,608	ticket distribution	hacked
+Typeform	2018	unknown	tech	poor security
+Uber	2017	57,000,000	transport	hacked
+Under Armour	2018	150,000,000	Consumer Goods	hacked
+Wordpress	2018			hacked

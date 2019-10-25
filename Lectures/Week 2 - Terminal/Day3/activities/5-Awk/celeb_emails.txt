@@ -1,0 +1,17 @@
+       
+     1	Seinfeld, Jerry <js@yahoo.com>
+     2	Lucas, George <glucas@roadrunner.net>
+     3	Spielberg, Steven <mrberg@aol.com>
+     4	Gibson, Mel <mel@earthlink.net>
+     5	Winfrey, Oprah <owinfrey@excite.com>
+     6  Kardashian, Khloe <kk@yahoo.com>
+     7	Dre, Dr. <dre@juno.com>
+     8	Mayweather, Floyd <prettyboy@hotmail.com>
+     9	Swift, Taylor <tswizzle@netzero.com>
+    10  Kardashian, Kim <kdash@netscape.com>
+    11	John, Elton <ejohn@aol.com>
+    12	Hilton, Paris <parish@lycos.com>
+    13	Stern, Howard <howard@aol.com>
+    14	Woods, Tiger <twoods@msn.com>
+    15  Kardashian, Kourtney <kdashian@earthlink.net>
+       
