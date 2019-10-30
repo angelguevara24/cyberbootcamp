@@ -1,0 +1,152 @@
+Feb 22 09:03:36 cyber-security-ubuntu pkexec: pam_unix(polkit-1:session): session opened for user root by (uid=1007)
+Feb 22 09:03:36 cyber-security-ubuntu pkexec[19090]: student: Executing command [USER=root] [TTY=unknown] [CWD=/home/student] [COMMAND=/usr/lib/update-notifier/package-system-locked]
+Feb 22 10:28:10 cyber-security-ubuntu systemd-logind[875]: New seat seat0.
+Feb 22 10:28:10 cyber-security-ubuntu systemd-logind[875]: Watching system buttons on /dev/input/event0 (Power Button)
+Feb 22 10:28:10 cyber-security-ubuntu systemd-logind[875]: Watching system buttons on /dev/input/event1 (Sleep Button)
+Feb 22 10:28:10 cyber-security-ubuntu systemd-logind[875]: Watching system buttons on /dev/input/event2 (AT Translated Set 2 keyboard)
+Feb 22 10:28:15 cyber-security-ubuntu su[1658]: Successful su for smmsp by root
+Feb 22 10:28:15 cyber-security-ubuntu su[1658]: + ??? root:smmsp
+Feb 22 10:28:15 cyber-security-ubuntu su[1658]: pam_unix(su:session): session opened for user smmsp by (uid=0)
+Feb 22 10:28:15 cyber-security-ubuntu systemd-logind[875]: New session c1 of user smmsp.
+Feb 22 10:28:15 cyber-security-ubuntu systemd: pam_unix(systemd-user:session): session opened for user smmsp by (uid=0)
+Feb 22 10:28:15 cyber-security-ubuntu su[1658]: pam_unix(su:session): session closed for user smmsp
+Feb 22 10:28:15 cyber-security-ubuntu systemd-logind[875]: Removed session c1.
+Feb 22 10:28:19 cyber-security-ubuntu useradd[1940]: failed adding user 'vboxadd', data deleted
+Feb 22 10:28:19 cyber-security-ubuntu useradd[1942]: failed adding user 'vboxadd', data deleted
+Feb 22 10:28:20 cyber-security-ubuntu lightdm: PAM unable to dlopen(pam_kwallet.so): /lib/security/pam_kwallet.so: cannot open shared object file: No such file or directory
+Feb 22 10:28:20 cyber-security-ubuntu lightdm: PAM adding faulty module: pam_kwallet.so
+Feb 22 10:28:20 cyber-security-ubuntu lightdm: PAM unable to dlopen(pam_kwallet5.so): /lib/security/pam_kwallet5.so: cannot open shared object file: No such file or directory
+Feb 22 10:28:20 cyber-security-ubuntu lightdm: PAM adding faulty module: pam_kwallet5.so
+Feb 22 10:28:20 cyber-security-ubuntu lightdm: pam_unix(lightdm-greeter:session): session opened for user lightdm by (uid=0)
+Feb 22 10:28:20 cyber-security-ubuntu systemd-logind[875]: New session c2 of user lightdm.
+Feb 22 10:28:20 cyber-security-ubuntu systemd: pam_unix(systemd-user:session): session opened for user lightdm by (uid=0)
+Feb 22 10:28:22 cyber-security-ubuntu lightdm: PAM unable to dlopen(pam_kwallet.so): /lib/security/pam_kwallet.so: cannot open shared object file: No such file or directory
+Feb 22 10:28:22 cyber-security-ubuntu lightdm: PAM adding faulty module: pam_kwallet.so
+Feb 22 10:28:22 cyber-security-ubuntu lightdm: PAM unable to dlopen(pam_kwallet5.so): /lib/security/pam_kwallet5.so: cannot open shared object file: No such file or directory
+Feb 22 10:28:22 cyber-security-ubuntu lightdm: PAM adding faulty module: pam_kwallet5.so
+Feb 22 10:28:28 cyber-security-ubuntu lightdm: pam_succeed_if(lightdm:auth): requirement "user ingroup nopasswdlogin" not met by user "student"
+Feb 22 10:28:33 cyber-security-ubuntu lightdm: pam_unix(lightdm-greeter:session): session closed for user lightdm
+Feb 22 10:28:33 cyber-security-ubuntu lightdm: pam_unix(lightdm:session): session opened for user student by (uid=0)
+Feb 22 10:28:33 cyber-security-ubuntu systemd-logind[875]: New session c3 of user student.
+Feb 22 10:28:33 cyber-security-ubuntu systemd: pam_unix(systemd-user:session): session opened for user student by (uid=0)
+Feb 22 10:28:33 cyber-security-ubuntu systemd-logind[875]: Removed session c2.
+Feb 22 10:28:33 cyber-security-ubuntu systemd: pam_unix(systemd-user:session): session closed for user lightdm
+Feb 22 10:28:34 cyber-security-ubuntu gnome-keyring-daemon[2504]: failed to unlock login keyring on startup
+Feb 22 10:28:35 cyber-security-ubuntu polkitd(authority=local): Registered Authentication Agent for unix-session:c3 (system bus name :1.86 [/usr/bin/gnome-shell], object path /org/freedesktop/PolicyKit1/AuthenticationAgent, locale en_US.UTF-8)
+Feb 22 10:28:47 cyber-security-ubuntu dbus-daemon[918]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Feb 22 10:40:01 cyber-security-ubuntu CRON[4039]: pam_unix(cron:session): session opened for user smmsp by (uid=0)
+Feb 22 10:40:18 cyber-security-ubuntu systemd-logind[875]: System is powering down.
+Feb 22 10:40:18 cyber-security-ubuntu lightdm: pam_unix(lightdm:session): session closed for user student
+Feb 22 16:46:12 cyber-security-ubuntu systemd-logind[799]: New seat seat0.
+Feb 22 16:46:12 cyber-security-ubuntu systemd-logind[799]: Watching system buttons on /dev/input/event0 (Power Button)
+Feb 22 16:46:12 cyber-security-ubuntu systemd-logind[799]: Watching system buttons on /dev/input/event1 (Sleep Button)
+Feb 22 16:46:12 cyber-security-ubuntu systemd-logind[799]: Watching system buttons on /dev/input/event2 (AT Translated Set 2 keyboard)
+Feb 22 16:46:16 cyber-security-ubuntu su[1515]: Successful su for smmsp by root
+Feb 22 16:46:16 cyber-security-ubuntu su[1515]: + ??? root:smmsp
+Feb 22 16:46:16 cyber-security-ubuntu su[1515]: pam_unix(su:session): session opened for user smmsp by (uid=0)
+Feb 22 16:46:16 cyber-security-ubuntu systemd-logind[799]: New session c1 of user smmsp.
+Feb 22 16:46:16 cyber-security-ubuntu systemd: pam_unix(systemd-user:session): session opened for user smmsp by (uid=0)
+Feb 22 16:46:17 cyber-security-ubuntu su[1515]: pam_unix(su:session): session closed for user smmsp
+Feb 22 16:46:17 cyber-security-ubuntu systemd-logind[799]: Removed session c1.
+Feb 22 16:46:18 cyber-security-ubuntu systemd: pam_unix(systemd-user:session): session closed for user smmsp
+Feb 22 16:46:28 cyber-security-ubuntu useradd[1889]: failed adding user 'vboxadd', data deleted
+Feb 22 16:46:28 cyber-security-ubuntu useradd[1890]: failed adding user 'vboxadd', data deleted
+Feb 22 16:46:31 cyber-security-ubuntu lightdm: PAM unable to dlopen(pam_kwallet.so): /lib/security/pam_kwallet.so: cannot open shared object file: No such file or directory
+Feb 22 16:46:31 cyber-security-ubuntu lightdm: PAM adding faulty module: pam_kwallet.so
+Feb 22 16:46:31 cyber-security-ubuntu lightdm: PAM unable to dlopen(pam_kwallet5.so): /lib/security/pam_kwallet5.so: cannot open shared object file: No such file or directory
+Feb 22 16:46:31 cyber-security-ubuntu lightdm: PAM adding faulty module: pam_kwallet5.so
+Feb 22 16:46:31 cyber-security-ubuntu lightdm: pam_unix(lightdm-greeter:session): session opened for user lightdm by (uid=0)
+Feb 22 16:46:31 cyber-security-ubuntu systemd-logind[799]: New session c2 of user lightdm.
+Feb 22 16:46:31 cyber-security-ubuntu systemd: pam_unix(systemd-user:session): session opened for user lightdm by (uid=0)
+Feb 22 16:46:34 cyber-security-ubuntu lightdm: PAM unable to dlopen(pam_kwallet.so): /lib/security/pam_kwallet.so: cannot open shared object file: No such file or directory
+Feb 22 16:46:34 cyber-security-ubuntu lightdm: PAM adding faulty module: pam_kwallet.so
+Feb 22 16:46:34 cyber-security-ubuntu lightdm: PAM unable to dlopen(pam_kwallet5.so): /lib/security/pam_kwallet5.so: cannot open shared object file: No such file or directory
+Feb 22 16:46:34 cyber-security-ubuntu lightdm: PAM adding faulty module: pam_kwallet5.so
+Feb 22 16:46:43 cyber-security-ubuntu lightdm: pam_succeed_if(lightdm:auth): requirement "user ingroup nopasswdlogin" not met by user "instructor"
+Feb 22 16:46:46 cyber-security-ubuntu lightdm: pam_unix(lightdm-greeter:session): session closed for user lightdm
+Feb 22 16:46:46 cyber-security-ubuntu lightdm: pam_unix(lightdm:session): session opened for user instructor by (uid=0)
+Feb 22 16:46:46 cyber-security-ubuntu systemd: pam_unix(systemd-user:session): session opened for user instructor by (uid=0)
+Feb 22 16:46:46 cyber-security-ubuntu systemd-logind[799]: New session c3 of user instructor.
+Feb 22 16:46:46 cyber-security-ubuntu systemd-logind[799]: Removed session c2.
+Feb 22 16:46:50 cyber-security-ubuntu polkitd(authority=local): Registered Authentication Agent for unix-session:c3 (system bus name :1.85 [/usr/bin/gnome-shell], object path /org/freedesktop/PolicyKit1/AuthenticationAgent, locale en_US.UTF-8)
+Feb 22 16:47:00 cyber-security-ubuntu dbus-daemon[754]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Feb 22 17:00:01 cyber-security-ubuntu CRON[3339]: pam_unix(cron:session): session opened for user smmsp by (uid=0)
+Feb 22 17:01:01 cyber-security-ubuntu CRON[3339]: pam_unix(cron:session): session closed for user smmsp
+Feb 22 17:17:01 cyber-security-ubuntu CRON[3415]: pam_unix(cron:session): session opened for user root by (uid=0)
+Feb 22 17:17:01 cyber-security-ubuntu CRON[3415]: pam_unix(cron:session): session closed for user root
+Feb 22 17:20:01 cyber-security-ubuntu CRON[3419]: pam_unix(cron:session): session opened for user smmsp by (uid=0)
+Feb 22 17:21:01 cyber-security-ubuntu CRON[3419]: pam_unix(cron:session): session closed for user smmsp
+Feb 22 17:40:01 cyber-security-ubuntu CRON[3478]: pam_unix(cron:session): session opened for user smmsp by (uid=0)
+Feb 22 17:41:01 cyber-security-ubuntu CRON[3478]: pam_unix(cron:session): session closed for user smmsp
+Feb 22 18:00:01 cyber-security-ubuntu CRON[3539]: pam_unix(cron:session): session opened for user smmsp by (uid=0)
+Feb 22 18:01:02 cyber-security-ubuntu CRON[3539]: pam_unix(cron:session): session closed for user smmsp
+Feb 22 18:17:01 cyber-security-ubuntu CRON[3585]: pam_unix(cron:session): session opened for user root by (uid=0)
+Feb 22 18:17:01 cyber-security-ubuntu CRON[3585]: pam_unix(cron:session): session closed for user root
+Feb 22 18:20:01 cyber-security-ubuntu CRON[3590]: pam_unix(cron:session): session opened for user smmsp by (uid=0)
+Feb 22 18:21:01 cyber-security-ubuntu CRON[3590]: pam_unix(cron:session): session closed for user smmsp
+Feb 22 18:40:01 cyber-security-ubuntu CRON[3622]: pam_unix(cron:session): session opened for user smmsp by (uid=0)
+Feb 22 18:41:01 cyber-security-ubuntu CRON[3622]: pam_unix(cron:session): session closed for user smmsp
+Feb 22 19:00:01 cyber-security-ubuntu CRON[3654]: pam_unix(cron:session): session opened for user smmsp by (uid=0)
+Feb 22 19:01:02 cyber-security-ubuntu CRON[3654]: pam_unix(cron:session): session closed for user smmsp
+Feb 22 19:17:01 cyber-security-ubuntu CRON[3703]: pam_unix(cron:session): session opened for user root by (uid=0)
+Feb 22 19:17:01 cyber-security-ubuntu CRON[3703]: pam_unix(cron:session): session closed for user root
+Feb 22 19:20:01 cyber-security-ubuntu CRON[3707]: pam_unix(cron:session): session opened for user smmsp by (uid=0)
+Feb 22 19:21:01 cyber-security-ubuntu CRON[3707]: pam_unix(cron:session): session closed for user smmsp
+Feb 22 19:34:06 cyber-security-ubuntu unix_chkpwd[3753]: password check failed for user (instructor)
+Feb 22 19:34:06 cyber-security-ubuntu gnome-screensaver-dialog: pam_unix(gnome-screensaver:auth): authentication failure; logname= uid=1000 euid=1000 tty=:0.0 ruser= rhost=  user=instructor
+Feb 22 19:34:17 cyber-security-ubuntu gnome-screensaver-dialog: gkr-pam: unlocked login keyring
+Feb 22 19:34:24 cyber-security-ubuntu systemd-logind[799]: System is powering down.
+Feb 25 16:49:48 cyber-security-ubuntu systemd-logind[879]: New seat seat0.
+Feb 25 16:49:48 cyber-security-ubuntu systemd-logind[879]: Watching system buttons on /dev/input/event0 (Power Button)
+Feb 25 16:49:48 cyber-security-ubuntu systemd-logind[879]: Watching system buttons on /dev/input/event1 (Sleep Button)
+Feb 25 16:49:48 cyber-security-ubuntu systemd-logind[879]: Watching system buttons on /dev/input/event2 (AT Translated Set 2 keyboard)
+Feb 25 16:49:53 cyber-security-ubuntu su[1658]: Successful su for smmsp by root
+Feb 25 16:49:53 cyber-security-ubuntu su[1658]: + ??? root:smmsp
+Feb 25 16:49:53 cyber-security-ubuntu su[1658]: pam_unix(su:session): session opened for user smmsp by (uid=0)
+Feb 25 16:49:53 cyber-security-ubuntu systemd-logind[879]: New session c1 of user smmsp.
+Feb 25 16:49:53 cyber-security-ubuntu systemd: pam_unix(systemd-user:session): session opened for user smmsp by (uid=0)
+Feb 25 16:49:53 cyber-security-ubuntu su[1658]: pam_unix(su:session): session closed for user smmsp
+Feb 25 16:49:53 cyber-security-ubuntu systemd-logind[879]: Removed session c1.
+Feb 25 16:49:53 cyber-security-ubuntu systemd: pam_unix(systemd-user:session): session closed for user smmsp
+Feb 25 16:49:57 cyber-security-ubuntu useradd[2285]: failed adding user 'vboxadd', data deleted
+Feb 25 16:49:57 cyber-security-ubuntu useradd[2287]: failed adding user 'vboxadd', data deleted
+Feb 25 16:49:59 cyber-security-ubuntu lightdm: PAM unable to dlopen(pam_kwallet.so): /lib/security/pam_kwallet.so: cannot open shared object file: No such file or directory
+Feb 25 16:49:59 cyber-security-ubuntu lightdm: PAM adding faulty module: pam_kwallet.so
+Feb 25 16:49:59 cyber-security-ubuntu lightdm: PAM unable to dlopen(pam_kwallet5.so): /lib/security/pam_kwallet5.so: cannot open shared object file: No such file or directory
+Feb 25 16:49:59 cyber-security-ubuntu lightdm: PAM adding faulty module: pam_kwallet5.so
+Feb 25 16:50:00 cyber-security-ubuntu lightdm: pam_unix(lightdm-greeter:session): session opened for user lightdm by (uid=0)
+Feb 25 16:50:00 cyber-security-ubuntu systemd-logind[879]: New session c2 of user lightdm.
+Feb 25 16:50:00 cyber-security-ubuntu systemd: pam_unix(systemd-user:session): session opened for user lightdm by (uid=0)
+Feb 25 16:50:02 cyber-security-ubuntu lightdm: PAM unable to dlopen(pam_kwallet.so): /lib/security/pam_kwallet.so: cannot open shared object file: No such file or directory
+Feb 25 16:50:02 cyber-security-ubuntu lightdm: PAM adding faulty module: pam_kwallet.so
+Feb 25 16:50:02 cyber-security-ubuntu lightdm: PAM unable to dlopen(pam_kwallet5.so): /lib/security/pam_kwallet5.so: cannot open shared object file: No such file or directory
+Feb 25 16:50:02 cyber-security-ubuntu lightdm: PAM adding faulty module: pam_kwallet5.so
+Feb 25 16:50:27 cyber-security-ubuntu dbus-daemon[756]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Feb 25 16:50:45 cyber-security-ubuntu lightdm: pam_succeed_if(lightdm:auth): requirement "user ingroup nopasswdlogin" not met by user "student"
+Feb 25 16:50:50 cyber-security-ubuntu lightdm: pam_unix(lightdm:session): session opened for user student by (uid=0)
+Feb 25 16:50:50 cyber-security-ubuntu systemd-logind[879]: New session c3 of user student.
+Feb 25 16:50:50 cyber-security-ubuntu systemd: pam_unix(systemd-user:session): session opened for user student by (uid=0)
+Feb 25 16:50:50 cyber-security-ubuntu systemd-logind[879]: Removed session c2.
+Feb 25 16:50:52 cyber-security-ubuntu gnome-keyring-daemon[3901]: failed to unlock login keyring on startup
+Feb 25 16:50:53 cyber-security-ubuntu polkitd(authority=local): Registered Authentication Agent for unix-session:c3 (system bus name :1.92 [/usr/bin/gnome-shell], object path /org/freedesktop/PolicyKit1/AuthenticationAgent, locale en_US.UTF-8)
+Feb 25 16:51:17 cyber-security-ubuntu dbus-daemon[756]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Jul 12 08:14:55 cyber-security-ubuntu sudo:     zeus : user NOT in sudoers ; TTY=pts/0 ; PWD=/ ; USER=root ; COMMAND=/bin/bash
+Jul 12 08:14:59 cyber-security-ubuntu sudo: pam_unix(sudo:auth): authentication failure; logname= uid=1006 euid=0 tty=/dev/pts/0 ruser=zeus rhost=  user=zeus
+Jul 12 08:15:05 cyber-security-ubuntu sudo:     zeus : user NOT in sudoers ; TTY=pts/0 ; PWD=/ ; USER=root ; COMMAND=/bin/bash
+Jul 12 08:15:12 cyber-security-ubuntu sudo: pam_unix(sudo:auth): authentication failure; logname= uid=1006 euid=0 tty=/dev/pts/0 ruser=zeus rhost=  user=zeus
+Jul 12 08:15:26 cyber-security-ubuntu sudo:     zeus : user NOT in sudoers ; TTY=pts/0 ; PWD=/ ; USER=root ; COMMAND=/bin/bash
+Jul 12 08:15:31 cyber-security-ubuntu sudo: pam_unix(sudo:auth): authentication failure; logname= uid=1006 euid=0 tty=/dev/pts/0 ruser=zeus rhost=  user=zeus
+Jul 12 08:15:42 cyber-security-ubuntu sudo:     zeus : user NOT in sudoers ; TTY=pts/0 ; PWD=/ ; USER=root ; COMMAND=/bin/bash
+Jul 12 08:15:49 cyber-security-ubuntu sudo: pam_unix(sudo:auth): authentication failure; logname= uid=1006 euid=0 tty=/dev/pts/0 ruser=zeus rhost=  user=zeus
+Jul 12 08:15:58 cyber-security-ubuntu sudo:     zeus : user NOT in sudoers ; TTY=pts/0 ; PWD=/ ; USER=root ; COMMAND=/bin/bash
+Jul 12 08:16:06 cyber-security-ubuntu sudo: pam_unix(sudo:auth): authentication failure; logname= uid=1006 euid=0 tty=/dev/pts/0 ruser=zeus rhost=  user=zeus
+Jul 12 08:16:18 cyber-security-ubuntu sudo:     zeus : user NOT in sudoers ; TTY=pts/0 ; PWD=/ ; USER=root ; COMMAND=/bin/bash
+Jul 12 08:16:25 cyber-security-ubuntu sudo: pam_unix(sudo:auth): authentication failure; logname= uid=1006 euid=0 tty=/dev/pts/0 ruser=zeus rhost=  user=zeus
+Jul 12 08:16:39 cyber-security-ubuntu sudo:     zeus : user NOT in sudoers ; TTY=pts/0 ; PWD=/ ; USER=root ; COMMAND=/bin/bash
+Jul 12 08:16:48 cyber-security-ubuntu sudo: pam_unix(sudo:auth): authentication failure; logname= uid=1006 euid=0 tty=/dev/pts/0 ruser=zeus rhost=  user=zeus
+Jul 12 08:16:58 cyber-security-ubuntu sudo:     zeus : user NOT in sudoers ; TTY=pts/0 ; PWD=/ ; USER=root ; COMMAND=/usr/sbin/adduser
+Jul 12 08:17:01 cyber-security-ubuntu CRON[30473]: pam_unix(cron:session): session opened for user root by (uid=0)
+Jul 12 08:17:01 cyber-security-ubuntu CRON[30473]: pam_unix(cron:session): session closed for user root
+Jul 12 08:17:49 cyber-security-ubuntu sudo: pam_unix(sudo:auth): authentication failure; logname= uid=1006 euid=0 tty=/dev/pts/0 ruser=zeus rhost=  user=zeus
+Jul 12 08:18:00 cyber-security-ubuntu sudo:     zeus : user NOT in sudoers ; TTY=pts/0 ; PWD=/ ; USER=root ; COMMAND=/bin/cp /etc/passwd /home
+Jul 12 08:18:05 cyber-security-ubuntu su[5082]: pam_unix(su:session): session closed for user zeus
