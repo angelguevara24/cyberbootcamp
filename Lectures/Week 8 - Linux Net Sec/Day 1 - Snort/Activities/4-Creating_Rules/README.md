@@ -8,7 +8,6 @@ In this exercise, you'll write Snort rules and test them against live traffic.
 ---
 
 - Open the `local.rules` file.
-- Comment out all of the existing rules.
 - Add the rules described below:
   - Write a rule that detects telnet traffic from the public Internet to the local subnet.
   - Write a rule that detects an attacker running a tcp scan on any port. 
