@@ -14,4 +14,4 @@ In this exercise, you'll write Snort rules and test them against live traffic.
   - Write a rule that detects an attacker running a tcp scan on any port. 
       - **Hint**: Be sure to specify the correct destination port(s).
 
-- **Bonus**: After implementing your rules, retrieve the `alert` file from your VM, and send it to the class via Slack.
+**Note**: Here's an example of the rule structure: **alert ip any any -> any any {msg “IP Packet Detected”;}**

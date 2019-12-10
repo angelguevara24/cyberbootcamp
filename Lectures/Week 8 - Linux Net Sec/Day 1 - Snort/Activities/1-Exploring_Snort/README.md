@@ -14,10 +14,6 @@ While today's exercises focus on Snort, the concepts you learn here are applicab
 ### The Snort Configuration File
 Begin by moving into `/etc/snort`. Then, answer the questions below.
 
-- List the four directories in `/etc/snort`, and research/explain what each is for.
-
-- Move into `/etc/snort/etc`.
-
 - Run: `grep -in step snort.conf`.
   - How many steps are there to configuring Snort?
 
