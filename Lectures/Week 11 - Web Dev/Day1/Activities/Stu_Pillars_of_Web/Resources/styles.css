@@ -1,0 +1,10 @@
+/* TODO: What does this line do? */
+@import url('https://fonts.googleapis.com/css?family=Gamja+Flower');
+
+#greeting {
+    /* TODO: Uncomment the line below to change the font */
+    /* font-family: "Gamja Flower"; */
+
+    /* TODO: Change the color to `tomato` */
+    color: default;
+}
