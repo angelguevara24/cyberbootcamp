@@ -9,7 +9,7 @@ Website: https://www.owasp.org/index.php/OWASP_Juice_Shop_Project
 
 ### Instructions
 
-We're gonna setup a 
+We're gonna setup a cloud instance of Juice Shop that you can interact with. 
 
 1. Navigate to https://signup.heroku.com/ and create a free account. 
 
@@ -20,7 +20,7 @@ We're gonna setup a
 
 4.  Once you've created a username, click on **Deploy App** and let the installation process finish.
 
-5. Once the install is done, click on the **View** button.  
+5. Once the install is done, click on the **View** button.  Note: is the view button is not there, the URL should be displayed in the Build app window followed by the words `deployed to Heroku.`
   ![](images/2.PNG)
 
 6. **SAVE THIS URL** This is where you'll interact with the Juice Shop vulnerable web application.
