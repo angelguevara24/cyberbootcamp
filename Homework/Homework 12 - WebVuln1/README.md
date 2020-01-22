@@ -17,18 +17,41 @@ Confidential Document
 
 
  ## SQL Injection
+ 
+ ### One Star Challenges
  * Provoke an error that is not very gracefully handled
+ 
+ ### Two Star Challenges
  * Log in with the administrator's user account
+    <details>
+       <summary>Hint</summary>
+        If you can't find it, the e-mail is admin@juice-sh.op
+     </details>
+ 
+ ### Three Star Challenges
  * Log in with Bender's user account
+    <details>
+       <summary>Hint</summary>
+        You need to log on as an administrator first. 
+     </details>
+ * Log in with Jim's user account. 
+    <details>
+       <summary>Hint</summary>
+        There are two ways to do this. The more fun way involves dumping all the user credentials via SQL injection. A walkthrough for that is here if you need an assist. 
+     </details>
 
  ## XSS Attacks
  * Perform a reflected XSS attack
      <details>
        <summary>Hint</summary>
-  
         Done from the track orders page
-  
      </details>
-   - test
- *  
+ *  Perform a DOM XSS attack
+ * Perform an XSS attack with ```<script>alert(`xss`)</script>``` on a legacy page within the application.
+
+    <details>
+       <summary>Hint</summary>
+        When logged in as any user, done from the user's profile page. 
+     </details>
+
 
