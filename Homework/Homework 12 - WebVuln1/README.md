@@ -37,7 +37,7 @@ Confidential Document
  * Log in with Jim's user account. 
     <details>
        <summary>Hint</summary>
-        There are two ways to do this. The more fun way involves dumping all the user credentials via SQL injection. A walkthrough for that is here if you need an assist. 
+        There are two ways to do this. The more fun way involves dumping all the user credentials via SQL injection. A walkthrough for that is [here](/hints/sqlinjection.md) if you need an assist. 
      </details>
 
  ## XSS Attacks
