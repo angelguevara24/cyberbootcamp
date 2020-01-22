@@ -1,25 +1,39 @@
 # Reflected XSS
 
-### DVWA
+### XSS Game
+Navigate to XSS Game at: <https://xss-game.appspot.com/level1>
 
-Log into DVWA on your Ubuntu VM
+- In the search bar, type: `hello`, then press **Search**.
 
-- Select `XSS (Reflected)` tab in the side navigation menu. 
+Take note of where the search term appears:
+  - On the error page
+  - In the URL query parameters
 
-- In the form's name field, deliver a XSS attack that steals the `document.cookie` by submitting an input which contains JavaScript.
-  - Deliver the same payload directly as a URL query parameter.
+ This reflection of user input into the page is a major vulnerability.
 
-- After your payload fires, look at the page HTML via `view-source`. Search for the payload you sent with `Ctrl + F`.
+The first step in searching for reflected XSS is to test if you can insert HTML, instead of normal text.
 
-- When you've gotten a payload to work, set your security level to **Medium**.
+Click **Try Again** to return to the vulnerable application's home page, then submit: `<h1>haxxed</h1>`
 
-- Try to drop the same XSS payload you did before. It shouldn't work.
-  - How do you think the XSS was prevented from firing?
-  - Use `view-source` to inspect the HTML. What do you notice?
+- Note that this inserts the word `haxxed` as an HTML heading—_not_ "normal text"!
 
-- Click **View Help** and highlight the solution to the **Medium** challenge. Use this hint to modify your previous payload and bypass the filter.
+This tips us off to the possibility of injecting a script tag. Enter: `<script>alert('you got hacked!')</script>`
 
-- Share your working payload in Slack.
+This vulnerability _reflects_ the user's input to the page. 
+
+- Note that the URL reads: 
+
+     `https://xss-game.appspot.com/level1/frame?query=<script>alert('you got hacked!')</script>`
+  
+- Identify the query string: 
+
+     `?query=<script>alert('you got hacked!')</script>`
+
+You can test for XSS by directly manipulating this string. 
+
+- Change the URL to the following, then refresh the page: 
+
+    `https://xss-game.appspot.com/level1/frame?query=<script>alert('this is a new alert!')</script>`
 
 ### Gruyere
 **Note**: Use Firefox/Foxy Proxy for this exercise.
@@ -28,8 +42,14 @@ Log into DVWA on your Ubuntu VM
 
 - Navigate to: <https://google-gruyere.appspot.com/{YOUR_GRUYERE_ID}/nonexistent>
   - What appears on the page here?
-  - Change `nonexistent` in the link to deliver the payload you used on DVWA.
+  - Change `nonexistent` in the link to deliver the payload you used on on the PortSwigger site.
 
 - Launch Burp Suite, and ensure that Interceptor is on.
 
 - Send the request to Repeater, and use it to deliver the same XSS payload.
+
+### Port Swigger Academy
+
+Navigate to https://portswigger.net/web-security/cross-site-scripting/reflected/lab-html-context-nothing-encoded and complete the lab **Reflected XSS into HTML content with nothing encoded.
+
+
