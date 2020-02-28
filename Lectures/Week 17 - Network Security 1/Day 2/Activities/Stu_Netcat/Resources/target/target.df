@@ -1,0 +1,2 @@
+FROM cyberxsecurity/target
+ENV ROOT="/"

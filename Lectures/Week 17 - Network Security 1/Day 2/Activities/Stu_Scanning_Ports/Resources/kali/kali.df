@@ -1,0 +1,5 @@
+FROM cyberxsecurity/kali 
+MAINTAINER Peleke Sengstacke "peleke@trilogyed.com"
+MAINTAINER Isaac Slape "islape@trilogyed.com"
+
+USER student

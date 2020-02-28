@@ -1,0 +1,17 @@
+version: '2.1'
+services:
+  target:
+    build:
+      context: ./target
+      dockerfile: ./target.df
+    privileged: true
+    image: target
+    container_name: Target
+    entrypoint: "bash /entrypoint.sh"
+
+  attacker:
+    build:
+      context: ./attacker
+      dockerfile: ./attacker.df
+    # image: attacker
+    container_name: Attacker

@@ -1,0 +1,5 @@
+FROM cyberxsecurity/attacker
+MAINTAINER Peleke Sengstacke "peleke@trilogyed.com"
+MAINTAINER Isaac Slape "islape@trilogyed.com"
+ENV ROOT="/" \
+    VERSION="0.1"

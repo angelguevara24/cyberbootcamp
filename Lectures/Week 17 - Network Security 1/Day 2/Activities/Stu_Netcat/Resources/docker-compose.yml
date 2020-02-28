@@ -1,0 +1,26 @@
+version: '2.1'
+services:
+  kali:
+    build:
+      context: ./kali
+      dockerfile: kali.df
+    command: tail -f 2>&1 /dev/null
+    privileged: true
+    container_name: Kali
+
+  ncat:
+    build:
+      context: ./target
+      dockerfile: target.df
+    command: tail -f 2>&1 /dev/null
+    privileged: true 
+    container_name: Ncat
+
+  attacker:
+    build:
+      context: ./target
+      dockerfile: target.df
+    command: tail -f 2>&1 /dev/null
+    privileged: true
+    container_name: Attacker
+
