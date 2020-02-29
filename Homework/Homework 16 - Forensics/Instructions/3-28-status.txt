@@ -1,0 +1,18 @@
+3/28/2019
+
+Digital Forensics - COMPLETED
+
+Homework: QA COMPLETE (3/27/2019)
+
+- Completed Homework from Jeff's and Peleke's review. Students will have the option of completing the Evidence Worksheet report or working on the Unicode Exercise.  
+
+ 3/27/2019.
+
+Completed Day 3:
+
+- Peleke's Modified Outline for Hex encoding and decoding.  
+- Completed the Guided Practice to look for web browsing activity in a HEX dump from the iPhone image.
+
+3/27/2019
+
+- QA and made changes to Day 1 and Day 2
